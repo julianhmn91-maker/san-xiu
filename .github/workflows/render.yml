@@ -1,0 +1,45 @@
+name: Render San Xiu PDF
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libpango-1.0-0 \
+            libpangoft2-1.0-0 \
+            libpangocairo-1.0-0 \
+            libcairo2 \
+            libgdk-pixbuf2.0-0 \
+            libffi-dev \
+            fonts-noto-cjk \
+            fonts-noto-core
+
+      - name: Install Python dependencies
+        run: |
+          pip install weasyprint pypdf
+
+      - name: Render PDF
+        run: |
+          python buch.py
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: San_Xiu_Das_Buch
+          path: San_Xiu_Das_Buch.pdf
+          retention-days: 30
