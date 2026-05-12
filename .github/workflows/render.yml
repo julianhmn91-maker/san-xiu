@@ -7,37 +7,38 @@ on:
 
 jobs:
   render:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
       - name: Install system dependencies
         run: |
-          sudo apt-get update
+          sudo apt-get update -qq
           sudo apt-get install -y \
+            python3-pip \
+            python3-cffi \
+            python3-brotli \
             libpango-1.0-0 \
             libpangoft2-1.0-0 \
             libpangocairo-1.0-0 \
             libcairo2 \
             libgdk-pixbuf2.0-0 \
             libffi-dev \
+            shared-mime-info \
+            fonts-noto \
             fonts-noto-cjk \
-            fonts-noto-core
+            fonts-noto-color-emoji
 
-      - name: Install Python dependencies
+      - name: Install Python packages
+        run: pip install weasyprint pypdf
+
+      - name: Render PDF (4 parts + merge)
         run: |
-          pip install weasyprint pypdf
+          python3 buch.py
+          echo "Exit code: $?"
+          ls -lh *.pdf
 
-      - name: Render PDF
-        run: |
-          python buch.py
-
-      - name: Upload PDF artifact
+      - name: Upload PDF
         uses: actions/upload-artifact@v4
         with:
           name: San_Xiu_Das_Buch
