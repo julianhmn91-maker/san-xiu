@@ -1,273 +1,266 @@
 #!/usr/bin/env python3
-"""SAN XIU – Das Buch | WeasyPrint PDF Generator"""
-import re, os, sys, time
+"""SAN XIU – Das Buch | cairosvg rendert SVGs zu PNGs, WeasyPrint rendert HTML"""
+import re, os, sys, time, base64
+import cairosvg
+from weasyprint import HTML
+from pypdf import PdfWriter, PdfReader
+
+OUT = 'San_Xiu_Das_Buch.pdf'
+SK="#C8935A"; SD="#9A7040"; INK="#1a1208"; RED="#8B1A0E"; GOLD="#B8961A"
+#!/usr/bin/env python3
+"""SAN XIU – Das Buch | cairosvg vorrendert SVGs als PNG, WeasyPrint rendert nur HTML"""
+import re, os, sys, time, base64
+import cairosvg
 from weasyprint import HTML
 from pypdf import PdfWriter, PdfReader
 
 OUT = 'San_Xiu_Das_Buch.pdf'
 SK="#C8935A"; SD="#9A7040"; INK="#1a1208"; RED="#8B1A0E"; GOLD="#B8961A"
 
-def R(s):
-    return re.sub(r'(\d+\.\d{3,})', lambda m: str(round(float(m.group()),1)), s)
+def _svg(w,h,body):
+    return f'<svg viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}">{body}</svg>'
 
-# ─── FIGUREN ────────────────────────────────────────────────────────────────
+def _head(cx,cy,r):
+    ex=r*2//5; ey=cy-r//8; exl=cx-ex; exr=cx+ex; ew=r*2//5; eh=r//5
+    return f"""
+<ellipse cx="{cx}" cy="{cy}" rx="{r}" ry="{int(r*1.1)}" fill="{SK}" stroke="{INK}" stroke-width="2"/>
+<path d="M{cx-r*5//9},{cy-r*7//10} Q{cx},{cy-r} {cx+r*5//9},{cy-r*7//10}" fill="{SD}" stroke="none" opacity="0.2"/>
+<path d="M{cx-r},{cy} Q{cx-r-5},{cy+6} {cx-r-2},{cy+13} Q{cx-r+2},{cy+16} {cx-r+5},{cy+14}" fill="{SK}" stroke="{INK}" stroke-width="1.4"/>
+<path d="M{cx+r},{cy} Q{cx+r+5},{cy+6} {cx+r+2},{cy+13} Q{cx+r-2},{cy+16} {cx+r-5},{cy+14}" fill="{SK}" stroke="{INK}" stroke-width="1.4"/>
+<path d="M{exl-ew//2},{ey-2} Q{exl},{ey-eh-2} {exl+ew//2},{ey-2}" fill="none" stroke="{INK}" stroke-width="1.7" opacity="0.85"/>
+<path d="M{exr-ew//2},{ey-2} Q{exr},{ey-eh-2} {exr+ew//2},{ey-2}" fill="none" stroke="{INK}" stroke-width="1.7" opacity="0.85"/>
+<ellipse cx="{exl}" cy="{ey}" rx="{ew//2}" ry="{max(1,eh//2)}" fill="{INK}" opacity="0.9"/>
+<ellipse cx="{exr}" cy="{ey}" rx="{ew//2}" ry="{max(1,eh//2)}" fill="{INK}" opacity="0.9"/>
+<path d="M{cx-r//5},{cy+r//3} Q{cx},{cy+r//2} {cx+r//5},{cy+r//3}" fill="none" stroke="{INK}" stroke-width="1.4" opacity="0.7"/>
+<circle cx="{cx}" cy="{cy-r-r//3}" r="2" fill="{RED}"/>"""
 
-def robe(cx, top, h, wide):
-    w2=wide//2; wb=int(wide*.55); x1=cx-w2; x2=cx+w2
-    xb1=cx-wb; xb2=cx+wb; yb=top+h; fm=top+h//3; fo=top+h//2
-    return f'''<path d="M{x1},{top} C{cx-w2},{fm} {xb1},{fo} {xb1},{yb}
-     L{xb2},{yb} C{xb2},{fo} {cx+w2},{fm} {x2},{top}Z"
-  fill="#2a1a0a" fill-opacity="0.11" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>
-<path d="{cx-w2//3},{top+h//5} Q{cx-w2//3-2},{fo} {cx-w2//3},{yb}" fill="none" stroke="{INK}" stroke-width="0.8" opacity="0.28" stroke-linecap="round"/>
-<path d="{cx},{top+12} Q{cx},{fo} {cx},{yb-4}" fill="none" stroke="{INK}" stroke-width="0.65" opacity="0.18" stroke-linecap="round"/>
-<path d="{cx+w2//3},{top+h//5} Q{cx+w2//3+2},{fo} {cx+w2//3},{yb}" fill="none" stroke="{INK}" stroke-width="0.8" opacity="0.28" stroke-linecap="round"/>'''
+def _robe(cx,top,h,w):
+    w2=w//2; wb=int(w*.54); x1=cx-w2; x2=cx+w2; xb1=cx-wb; xb2=cx+wb; yb=top+h
+    fm=top+h//3; fo=top+h//2
+    return f"""<path d="M{x1},{top} C{x1},{fm} {xb1},{fo} {xb1},{yb} L{xb2},{yb} C{xb2},{fo} {x2},{fm} {x2},{top} Z"
+  fill="#2a1a0a" fill-opacity="0.12" stroke="{INK}" stroke-width="2.2"/>
+<path d="M{cx-w2//3},{top+h//5} Q{cx-w2//3},{fo} {cx-w2//3},{yb}" fill="none" stroke="{INK}" stroke-width="0.8" opacity="0.28"/>
+<path d="M{cx},{top+10} Q{cx},{fo} {cx},{yb-4}" fill="none" stroke="{INK}" stroke-width="0.65" opacity="0.18"/>
+<path d="M{cx+w2//3},{top+h//5} Q{cx+w2//3},{fo} {cx+w2//3},{yb}" fill="none" stroke="{INK}" stroke-width="0.8" opacity="0.28"/>"""
 
-def head(cx, cy, r):
-    ex=r*2//5; ey=cy-r//12; exl=cx-ex; exr=cx+ex; ew=r*2//5
-    return f'''<ellipse cx="{cx}" cy="{cy}" rx="{r}" ry="{r+r//9}" fill="{SK}" stroke="{INK}" stroke-width="2.2"/>
-<path d="{cx-r*5//9},{cy-r*7//10} Q{cx},{cy-r} {cx+r*5//9},{cy-r*7//10}" fill="{SD}" stroke="none" opacity="0.2"/>
-<path d="{cx-r},{cy} Q{cx-r-5},{cy+6} {cx-r-3},{cy+12} Q{cx-r+1},{cy+15} {cx-r+5},{cy+14}" fill="{SK}" stroke="{INK}" stroke-width="1.4" stroke-linecap="round"/>
-<path d="{cx+r},{cy} Q{cx+r+5},{cy+6} {cx+r+3},{cy+12} Q{cx+r-1},{cy+15} {cx+r-5},{cy+14}" fill="{SK}" stroke="{INK}" stroke-width="1.4" stroke-linecap="round"/>
-<path d="{exl-ew//2-2},{ey-3} Q{exl},{ey-8} {exl+ew//2+2},{ey-3}" fill="none" stroke="{INK}" stroke-width="1.7" stroke-linecap="round" opacity="0.85"/>
-<path d="{exr-ew//2-2},{ey-3} Q{exr},{ey-8} {exr+ew//2+2},{ey-3}" fill="none" stroke="{INK}" stroke-width="1.7" stroke-linecap="round" opacity="0.85"/>
-<path d="{exl-ew//2},{ey} Q{exl},{ey+ew//3} {exl+ew//2},{ey} Q{exl},{ey+4} {exl-ew//2},{ey}Z" fill="{INK}" opacity="0.88"/>
-<path d="{exr-ew//2},{ey} Q{exr},{ey+ew//3} {exr+ew//2},{ey} Q{exr},{ey+4} {exr-ew//2},{ey}Z" fill="{INK}" opacity="0.88"/>
-<path d="{cx-r//5},{cy+r//3} Q{cx},{cy+r//2} {cx+r//5},{cy+r//3}" fill="none" stroke="{INK}" stroke-width="1.4" stroke-linecap="round" opacity="0.72"/>
-<circle cx="{cx}" cy="{cy-r-r//3}" r="2" fill="{RED}"/>'''
+def _arm(x1,y1,x2,y2,x3,y3):
+    return f'<path d="M{x1},{y1} Q{x2},{y2} {x3},{y3}" fill="none" stroke="{INK}" stroke-width="9" stroke-linecap="round" opacity="0.10"/><path d="M{x1},{y1} Q{x2},{y2} {x3},{y3}" fill="none" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>'
 
-def mudra(cx, cy):
-    return f'''<path d="M{cx-28},{cy} Q{cx-14},{cy+8} {cx},{cy+10} Q{cx+14},{cy+8} {cx+28},{cy}" fill="none" stroke="{INK}" stroke-width="1.6" stroke-linecap="round"/>
-<path d="M{cx-28},{cy} Q{cx-24},{cy-4} {cx-16},{cy-4} Q{cx-6},{cy-4} {cx},{cy} Q{cx+6},{cy-4} {cx+16},{cy-4} Q{cx+24},{cy-4} {cx+28},{cy} Q{cx+24},{cy+6} {cx+18},{cy+10} Q{cx+8},{cy+14} {cx},{cy+14} Q{cx-8},{cy+14} {cx-18},{cy+10} Q{cx-24},{cy+6} {cx-28},{cy}Z" fill="{SK}" stroke="{INK}" stroke-width="1.6"/>
-<ellipse cx="{cx}" cy="{cy-1}" rx="7" ry="3" fill="#d4a870" stroke="{INK}" stroke-width="0.9" opacity="0.82"/>'''
+def _leg(x1,y1,x2,y2,x3,y3):
+    return f'<path d="M{x1},{y1} Q{x2},{y2} {x3},{y3}" fill="none" stroke="{INK}" stroke-width="14" stroke-linecap="round" opacity="0.10"/><path d="M{x1},{y1} Q{x2},{y2} {x3},{y3}" fill="none" stroke="{INK}" stroke-width="2.6" stroke-linecap="round"/>'
 
-def arm(x1,y1,x2,y2,x3,y3):
-    return f'''<path d="M{x1},{y1} Q{x2},{y2} {x3},{y3}" fill="none" stroke="{INK}" stroke-width="9" stroke-linecap="round" opacity="0.10"/>
-<path d="M{x1},{y1} Q{x2},{y2} {x3},{y3}" fill="none" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>'''
+def _hand(cx,cy,rx=10,ry=7):
+    return f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="{SK}" stroke="{INK}" stroke-width="1.8"/>'
 
-def hand(cx,cy): return f'<ellipse cx="{cx}" cy="{cy}" rx="10" ry="7" fill="{SK}" stroke="{INK}" stroke-width="1.8"/>'
-def leg(x1,y1,x2,y2,x3,y3):
-    return f'''<path d="M{x1},{y1} Q{x2},{y2} {x3},{y3}" fill="none" stroke="{INK}" stroke-width="14" stroke-linecap="round" opacity="0.10"/>
-<path d="M{x1},{y1} Q{x2},{y2} {x3},{y3}" fill="none" stroke="{INK}" stroke-width="2.6" stroke-linecap="round"/>'''
+def _mudra(cx,cy):
+    return f'<path d="M{cx-28},{cy} Q{cx},{cy+10} {cx+28},{cy} Q{cx+24},{cy+6} {cx+18},{cy+10} Q{cx},{cy+14} {cx-18},{cy+10} Q{cx-24},{cy+6} {cx-28},{cy} Z" fill="{SK}" stroke="{INK}" stroke-width="1.6"/><ellipse cx="{cx}" cy="{cy-1}" rx="7" ry="3" fill="#d4a870" stroke="{INK}" stroke-width="0.9" opacity="0.82"/>'
 
-def gnd(cx,cy,w=52): return f'<line x1="{cx-w}" y1="{cy}" x2="{cx+w}" y2="{cy}" stroke="{GOLD}" stroke-width="1.5" stroke-linecap="round"/>'
+def _neck(cx,top,r=8):
+    return f'<path d="M{cx-r},{top} Q{cx},{top-6} {cx+r},{top}" fill="{SK}" stroke="{INK}" stroke-width="1.7"/>'
+
+def _ground(cx,cy,w=52):
+    return f'<line x1="{cx-w}" y1="{cy}" x2="{cx+w}" y2="{cy}" stroke="{GOLD}" stroke-width="1.5"/>'
+
+def _lbl(x,y,t,anchor="start"):
+    return f'<text x="{x}" y="{y}" text-anchor="{anchor}" font-family="Georgia,serif" font-size="7.5" fill="{RED}">{t}</text>'
+
+def _dot(cx,cy,r=8,n=""):
+    return f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{RED}"/>{"<text x="+str(cx)+" y="+str(cy+3)+" text-anchor=middle font-size=8 fill=white font-family=Georgia>"+n+"</text>" if n else ""}'
+
 
 def fig_bodhi():
-    return R(f'''<svg viewBox="0 0 260 310" xmlns="http://www.w3.org/2000/svg" width="220" height="263">
-<circle cx="130" cy="158" r="118" fill="none" stroke="{RED}" stroke-width="1.2" opacity="0.32"/>
-<ellipse cx="130" cy="290" rx="82" ry="11" fill="{INK}" opacity="0.06"/>
-<path d="M50,278 Q58,258 70,242 Q84,224 102,212 Q116,202 130,200 Q144,202 158,212 Q176,224 190,242 Q202,258 210,278 Q170,288 130,288 Q90,288 50,278Z" fill="#2a1a0a" fill-opacity="0.11" stroke="{INK}" stroke-width="2.2" stroke-linejoin="round"/>
-<path d="M90,248 Q88,264 86,280" fill="none" stroke="{INK}" stroke-width="0.9" opacity="0.28" stroke-linecap="round"/>
-<path d="M130,202 Q128,250 128,286" fill="none" stroke="{INK}" stroke-width="0.65" opacity="0.18" stroke-linecap="round"/>
-<path d="M170,248 Q172,264 174,280" fill="none" stroke="{INK}" stroke-width="0.9" opacity="0.28" stroke-linecap="round"/>
-<path d="M100,200 Q94,184 94,168 Q94,154 102,144 Q114,134 130,132 Q146,134 158,144 Q166,154 166,168 Q166,184 160,200" fill="#2a1a0a" fill-opacity="0.10" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>
-<path d="M122,132 Q126,120 130,117 Q134,120 138,132" fill="{SK}" stroke="{INK}" stroke-width="1.7" stroke-linecap="round"/>
-{head(130,100,24)}
-{mudra(130,218)}
-</svg>''')
+    b = f"""<circle cx="130" cy="155" r="118" fill="none" stroke="{RED}" stroke-width="1.2" opacity="0.32"/>
+<ellipse cx="130" cy="288" rx="82" ry="11" fill="{INK}" opacity="0.06"/>
+<path d="M50,275 Q65,248 82,232 Q100,214 118,206 Q130,200 130,200 Q142,206 160,214 Q178,232 195,248 Q210,275 170,286 Q130,286 90,286 Q50,286 50,275 Z" fill="#2a1a0a" fill-opacity="0.12" stroke="{INK}" stroke-width="2.2"/>
+<path d="M92,248 Q90,264 88,278" fill="none" stroke="{INK}" stroke-width="0.9" opacity="0.28"/>
+<path d="M130,204 Q128,250 128,284" fill="none" stroke="{INK}" stroke-width="0.65" opacity="0.18"/>
+<path d="M168,248 Q170,264 172,278" fill="none" stroke="{INK}" stroke-width="0.9" opacity="0.28"/>
+<path d="M100,200 Q92,182 94,164 Q100,146 116,138 Q130,132 144,138 Q160,146 166,164 Q168,182 160,200" fill="#2a1a0a" fill-opacity="0.10" stroke="{INK}" stroke-width="2.2"/>"""
+    b += _neck(130,132); b += _head(130,102,24); b += _mudra(130,218)
+    return _svg(260,306,b)
 
 def fig_zazen():
-    return R(f'''<svg viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg" width="280" height="262">
-<ellipse cx="150" cy="268" rx="88" ry="10" fill="{INK}" opacity="0.06"/>
-<path d="M56,262 Q64,240 76,222 Q88,206 104,196 Q118,186 134,182 Q142,180 150,180 Q158,180 166,182 Q182,186 196,196 Q212,206 224,222 Q236,240 244,262" fill="#2a1a0a" fill-opacity="0.11" stroke="{INK}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M110,198 Q108,228 106,264" fill="none" stroke="{INK}" stroke-width="0.8" opacity="0.28" stroke-linecap="round"/>
-<path d="M150,184 Q148,230 148,266" fill="none" stroke="{INK}" stroke-width="0.65" opacity="0.18" stroke-linecap="round"/>
-<path d="M190,198 Q192,228 194,264" fill="none" stroke="{INK}" stroke-width="0.8" opacity="0.28" stroke-linecap="round"/>
-<path d="M104,196 Q98,180 100,164 Q106,150 120,144 Q134,138 150,138 Q166,138 180,144 Q194,150 200,164 Q202,180 196,196" fill="#2a1a0a" fill-opacity="0.10" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>
-<path d="M142,138 Q146,126 150,123 Q154,126 158,138" fill="{SK}" stroke="{INK}" stroke-width="1.7" stroke-linecap="round"/>
-{head(150,106,24)}
-{mudra(150,218)}
-<circle cx="52" cy="108" r="8" fill="{RED}"/>
-<text x="52" y="112" text-anchor="middle" font-size="8" fill="white" font-family="Georgia">1</text>
-<text x="90" y="98" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Baihui auf</text>
-<circle cx="202" cy="110" r="8" fill="{RED}"/>
-<text x="202" y="114" text-anchor="middle" font-size="8" fill="white" font-family="Georgia">2</text>
-<text x="212" y="105" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Augen halb</text>
-<circle cx="50" cy="168" r="8" fill="{RED}"/>
-<text x="50" y="172" text-anchor="middle" font-size="8" fill="white" font-family="Georgia">3</text>
-<text x="10" y="162" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Schultern</text>
-<circle cx="112" cy="220" r="8" fill="{RED}"/>
-<text x="112" y="224" text-anchor="middle" font-size="8" fill="white" font-family="Georgia">4</text>
+    b = f"""<ellipse cx="150" cy="266" rx="88" ry="10" fill="{INK}" opacity="0.06"/>
+<path d="M56,260 Q70,236 86,218 Q102,200 120,192 Q134,184 150,182 Q166,184 180,192 Q198,200 214,218 Q230,236 244,260" fill="#2a1a0a" fill-opacity="0.12" stroke="{INK}" stroke-width="2.4"/>
+<path d="M110,196 Q108,228 106,262" fill="none" stroke="{INK}" stroke-width="0.8" opacity="0.28"/>
+<path d="M150,186 Q148,230 148,264" fill="none" stroke="{INK}" stroke-width="0.65" opacity="0.18"/>
+<path d="M190,196 Q192,228 194,262" fill="none" stroke="{INK}" stroke-width="0.8" opacity="0.28"/>
+<path d="M104,194 Q96,178 98,162 Q106,146 122,140 Q150,134 178,140 Q194,146 202,162 Q204,178 196,194" fill="#2a1a0a" fill-opacity="0.10" stroke="{INK}" stroke-width="2.2"/>"""
+    b += _neck(150,134); b += _head(150,106,24); b += _mudra(150,218)
+    b += f'''<circle cx="52" cy="108" r="8" fill="{RED}"/><text x="52" y="112" text-anchor="middle" font-size="8" fill="white" font-family="Georgia">1</text>
+<text x="86" y="96" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Baihui</text>
+<circle cx="202" cy="110" r="8" fill="{RED}"/><text x="202" y="114" text-anchor="middle" font-size="8" fill="white" font-family="Georgia">2</text>
+<text x="212" y="106" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Augen halb</text>
+<circle cx="50" cy="168" r="8" fill="{RED}"/><text x="50" y="172" text-anchor="middle" font-size="8" fill="white" font-family="Georgia">3</text>
+<text x="5" y="162" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Schultern</text>
+<circle cx="112" cy="220" r="8" fill="{RED}"/><text x="112" y="224" text-anchor="middle" font-size="8" fill="white" font-family="Georgia">4</text>
 <text x="60" y="222" text-anchor="end" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Mudra</text>
-<circle cx="190" cy="190" r="8" fill="{RED}"/>
-<text x="190" y="194" text-anchor="middle" font-size="8" fill="white" font-family="Georgia">5</text>
-<text x="222" y="185" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Rücken</text>
-<circle cx="150" cy="264" r="8" fill="{RED}"/>
-<text x="150" y="268" text-anchor="middle" font-size="8" fill="white" font-family="Georgia">6</text>
-<text x="160" y="278" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Lotus/Sitz</text>
-</svg>''')
+<circle cx="192" cy="190" r="8" fill="{RED}"/><text x="192" y="194" text-anchor="middle" font-size="8" fill="white" font-family="Georgia">5</text>
+<text x="224" y="186" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Rücken</text>
+<circle cx="150" cy="264" r="8" fill="{RED}"/><text x="150" y="268" text-anchor="middle" font-size="8" fill="white" font-family="Georgia">6</text>
+<text x="162" y="278" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Lotus/Sitz</text>'''
+    return _svg(300,280,b)
 
 def fig_wuji():
-    return R(f'''<svg viewBox="0 0 200 310" xmlns="http://www.w3.org/2000/svg" width="185" height="287">
-{gnd(100,306)}
-{robe(100,76,218,94)}
-<path d="M92,76 C94,64 98,57 100,56 C102,57 106,64 108,76" fill="{SK}" stroke="{INK}" stroke-width="1.8" stroke-linecap="round"/>
-{head(100,42,22)}
-<line x1="100" y1="14" x2="100" y2="2" stroke="{RED}" stroke-width="1.5" stroke-linecap="round"/>
-<path d="M94,7 L100,0 L106,7" fill="none" stroke="{RED}" stroke-width="1.5" stroke-linecap="round"/>
-<path d="M80,300 Q78,305 76,304" stroke="{INK}" stroke-width="2" stroke-linecap="round" fill="none"/>
-<path d="M120,300 Q122,305 124,304" stroke="{INK}" stroke-width="2" stroke-linecap="round" fill="none"/>
+    b = _ground(100,304); b += _robe(100,76,218,94); b += _neck(100,76); b += _head(100,42,22)
+    b += f'''<line x1="100" y1="14" x2="100" y2="2" stroke="{RED}" stroke-width="1.5"/>
+<path d="M94,7 L100,0 L106,7" fill="none" stroke="{RED}" stroke-width="1.5"/>
+<path d="M80,298 Q78,303 76,302" stroke="{INK}" stroke-width="2" fill="none"/>
+<path d="M120,298 Q122,303 124,302" stroke="{INK}" stroke-width="2" fill="none"/>
 <circle cx="100" cy="210" r="7" fill="none" stroke="{RED}" stroke-width="1" stroke-dasharray="2,2" opacity="0.55"/>
+<circle cx="100" cy="210" r="2.5" fill="{RED}" opacity="0.45"/>
 <text x="114" y="208" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Dan Tian</text>
-<text x="100" y="-4" text-anchor="middle" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Baihui</text>
-</svg>''')
+<text x="100" y="-4" text-anchor="middle" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Baihui</text>'''
+    return _svg(200,310,b)
 
 def fig_baum():
-    return R(f'''<svg viewBox="0 0 270 295" xmlns="http://www.w3.org/2000/svg" width="250" height="274">
-{gnd(140,290,58)}
-<path d="M122,248 Q120,266 118,290 L128,290 Q130,270 132,252" fill="#2a1a0a" fill-opacity="0.10" stroke="{INK}" stroke-width="1.8" stroke-linecap="round"/>
-<path d="M158,248 Q160,266 162,290 L152,290 Q150,270 148,252" fill="#2a1a0a" fill-opacity="0.10" stroke="{INK}" stroke-width="1.8" stroke-linecap="round"/>
-{robe(140,78,170,96)}
-<path d="M132,78 C134,66 138,59 140,58 C142,59 146,66 148,78" fill="{SK}" stroke="{INK}" stroke-width="1.7" stroke-linecap="round"/>
-{head(140,43,22)}
-{arm(106,128,76,155,72,192)}
-{arm(174,128,204,155,208,192)}
-{hand(128,222)}{hand(152,222)}
-<ellipse cx="140" cy="186" rx="40" ry="32" fill="none" stroke="{RED}" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.45"/>
-<circle cx="140" cy="186" r="5" fill="{RED}" opacity="0.3"/>
-<text x="196" y="190" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Qi-Ball</text>
-</svg>''')
+    b = _ground(140,288,58)
+    b += f'''<path d="M122,246 Q120,264 118,288 L128,288 Q130,268 132,250" fill="#2a1a0a" fill-opacity="0.10" stroke="{INK}" stroke-width="1.8"/>
+<path d="M158,246 Q160,264 162,288 L152,288 Q150,268 148,250" fill="#2a1a0a" fill-opacity="0.10" stroke="{INK}" stroke-width="1.8"/>'''
+    b += _robe(140,78,170,96); b += _neck(140,78); b += _head(140,43,22)
+    b += _arm(106,128,76,155,72,190); b += _arm(174,128,204,155,208,190)
+    b += _hand(128,220); b += _hand(152,220)
+    b += f'''<ellipse cx="140" cy="185" rx="40" ry="32" fill="none" stroke="{RED}" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.45"/>
+<circle cx="140" cy="185" r="5" fill="{RED}" opacity="0.3"/>
+<text x="196" y="190" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Qi-Ball</text>'''
+    return _svg(270,295,b)
 
 def fig_mabu():
-    return R(f'''<svg viewBox="0 0 310 275" xmlns="http://www.w3.org/2000/svg" width="288" height="256">
-{gnd(155,268,115)}
-{leg(128,206,104,226,68,268)}
-{leg(182,206,208,226,242,268)}
-<path d="M68,268 L52,270" stroke="{INK}" stroke-width="2.5" stroke-linecap="round"/>
-<path d="M242,268 L258,270" stroke="{INK}" stroke-width="2.5" stroke-linecap="round"/>
-{robe(155,80,128,100)}
-<path d="M147,80 C149,68 153,61 155,60 C157,61 161,68 163,80" fill="{SK}" stroke="{INK}" stroke-width="1.7" stroke-linecap="round"/>
-{head(155,45,23)}
-{arm(108,145,88,152,74,180)}{hand(74,182)}
-{arm(202,145,222,152,236,180)}{hand(236,182)}
-<line x1="155" y1="200" x2="155" y2="188" stroke="{RED}" stroke-width="1.3" stroke-linecap="round"/>
-<path d="M149,194 L155,202 L161,194" fill="none" stroke="{RED}" stroke-width="1.3" stroke-linecap="round"/>
-</svg>''')
+    b = _ground(155,268,115)
+    b += _leg(128,204,104,226,68,268); b += _leg(182,204,208,226,242,268)
+    b += f'''<path d="M68,268 L52,270" stroke="{INK}" stroke-width="2.5"/>
+<path d="M242,268 L258,270" stroke="{INK}" stroke-width="2.5"/>'''
+    b += _robe(155,80,128,100); b += _neck(155,80); b += _head(155,45,23)
+    b += _arm(108,145,88,152,74,180); b += _hand(74,182)
+    b += _arm(202,145,222,152,236,180); b += _hand(236,182)
+    b += f'''<line x1="155" y1="200" x2="155" y2="188" stroke="{RED}" stroke-width="1.3"/>
+<path d="M149,194 L155,202 L161,194" fill="none" stroke="{RED}" stroke-width="1.3"/>'''
+    return _svg(310,275,b)
 
 def fig_squat():
-    return R(f'''<svg viewBox="0 0 260 248" xmlns="http://www.w3.org/2000/svg" width="240" height="230">
-{gnd(130,242,80)}
-{leg(112,196,90,212,64,242)}
-{leg(148,196,170,212,196,242)}
-{robe(130,56,140,92)}
-<path d="M122,56 C124,44 128,37 130,36 C132,37 136,44 138,56" fill="{SK}" stroke="{INK}" stroke-width="1.7" stroke-linecap="round"/>
-{head(130,22,22)}
-{arm(96,138,106,150,96,138)}{hand(96,138)}
-{arm(164,138,154,150,164,138)}{hand(164,138)}
-<path d="M96,138 Q118,158 130,162 Q142,158 164,138" fill="none" stroke="{INK}" stroke-width="2.1" stroke-linecap="round"/>
-</svg>''')
+    b = _ground(130,242,80)
+    b += _leg(112,194,90,212,64,242); b += _leg(148,194,170,212,196,242)
+    b += _robe(130,56,138,92); b += _neck(130,56); b += _head(130,22,22)
+    b += _arm(96,136,106,150,130,160); b += _arm(164,136,154,150,130,160)
+    b += _hand(96,136); b += _hand(164,136)
+    b += f'''<path d="M96,136 Q113,156 130,160 Q147,156 164,136" fill="none" stroke="{INK}" stroke-width="2.1"/>'''
+    return _svg(260,248,b)
 
 def fig_kinhin():
-    return R(f'''<svg viewBox="0 0 240 305" xmlns="http://www.w3.org/2000/svg" width="220" height="280">
-<path d="M118,244 Q106,262 100,286" fill="none" stroke="{INK}" stroke-width="14" stroke-linecap="round" opacity="0.10"/>
-<path d="M118,244 Q106,262 100,286" fill="none" stroke="{INK}" stroke-width="2.5" stroke-linecap="round"/>
-<path d="M100,286 L86,288" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>
-<path d="M142,244 Q152,260 156,284" fill="none" stroke="{INK}" stroke-width="14" stroke-linecap="round" opacity="0.10"/>
-<path d="M142,244 Q152,260 156,284" fill="none" stroke="{INK}" stroke-width="2.5" stroke-linecap="round"/>
-<path d="M156,284 L170,286" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>
-<line x1="76" y1="292" x2="110" y2="292" stroke="{GOLD}" stroke-width="1.4" stroke-linecap="round"/>
-<line x1="148" y1="292" x2="180" y2="292" stroke="{GOLD}" stroke-width="1.4" stroke-linecap="round"/>
-{robe(130,76,162,94)}
-<path d="M122,76 C124,64 128,57 130,56 C132,57 136,64 138,76" fill="{SK}" stroke="{INK}" stroke-width="1.7" stroke-linecap="round"/>
-{head(130,41,22)}
-<path d="M108,138 Q118,130 130,128 Q142,130 152,138 Q148,150 130,162 Q112,150 108,138Z" fill="{SK}" stroke="{INK}" stroke-width="1.7"/>
-<text x="56" y="148" text-anchor="end" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Gassho</text>
-</svg>''')
+    b = f'''<path d="M118,242 Q106,260 100,284" fill="none" stroke="{INK}" stroke-width="14" stroke-linecap="round" opacity="0.10"/>
+<path d="M118,242 Q106,260 100,284" fill="none" stroke="{INK}" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M100,284 L86,286" stroke="{INK}" stroke-width="2.2"/>
+<path d="M142,242 Q152,258 156,282" fill="none" stroke="{INK}" stroke-width="14" stroke-linecap="round" opacity="0.10"/>
+<path d="M142,242 Q152,258 156,282" fill="none" stroke="{INK}" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M156,282 L170,284" stroke="{INK}" stroke-width="2.2"/>
+<line x1="76" y1="290" x2="110" y2="290" stroke="{GOLD}" stroke-width="1.4"/>
+<line x1="148" y1="290" x2="180" y2="290" stroke="{GOLD}" stroke-width="1.4"/>'''
+    b += _robe(130,76,162,94); b += _neck(130,76); b += _head(130,41,22)
+    b += f'''<path d="M108,136 Q118,128 130,126 Q142,128 152,136 Q148,150 130,160 Q112,150 108,136 Z" fill="{SK}" stroke="{INK}" stroke-width="1.7"/>
+<text x="56" y="148" text-anchor="end" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Gassho</text>'''
+    return _svg(240,305,b)
 
 def fig_wei_tuo():
-    return R(f'''<svg viewBox="0 0 220 330" xmlns="http://www.w3.org/2000/svg" width="200" height="300">
-{gnd(110,322,55)}
-<path d="M92,286 Q90,302 88,322" fill="none" stroke="{INK}" stroke-width="14" stroke-linecap="round" opacity="0.10"/>
-<path d="M92,286 Q90,302 88,322" fill="none" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>
-<path d="M128,286 Q130,302 132,322" fill="none" stroke="{INK}" stroke-width="14" stroke-linecap="round" opacity="0.10"/>
-<path d="M128,286 Q130,302 132,322" fill="none" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>
-{robe(110,100,186,92)}
-{arm(76,116,62,70,78,40)}{arm(144,116,158,70,142,40)}
-<path d="M78,40 Q94,32 110,30 Q126,32 142,40 Q138,48 110,56 Q82,48 78,40Z" fill="{SK}" stroke="{INK}" stroke-width="1.8"/>
-<path d="M102,100 C104,88 108,81 110,80 C112,81 116,88 118,100" fill="{SK}" stroke="{INK}" stroke-width="1.7" stroke-linecap="round"/>
-{head(110,64,22)}
-<line x1="110" y1="24" x2="110" y2="8" stroke="{RED}" stroke-width="1.6" stroke-linecap="round"/>
-<path d="M104,14 L110,6 L116,14" fill="none" stroke="{RED}" stroke-width="1.6" stroke-linecap="round"/>
-<text x="110" y="2" text-anchor="middle" font-family="Georgia,serif" font-size="7.5" fill="{RED}">San Jiao</text>
-</svg>''')
+    b = _ground(110,320,55)
+    b += f'''<path d="M92,284 Q90,302 88,320" fill="none" stroke="{INK}" stroke-width="14" stroke-linecap="round" opacity="0.10"/>
+<path d="M92,284 Q90,302 88,320" fill="none" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M128,284 Q130,302 132,320" fill="none" stroke="{INK}" stroke-width="14" stroke-linecap="round" opacity="0.10"/>
+<path d="M128,284 Q130,302 132,320" fill="none" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>'''
+    b += _robe(110,100,184,92)
+    b += _arm(76,116,62,70,78,40); b += _arm(144,116,158,70,142,40)
+    b += f'''<path d="M78,40 Q94,32 110,30 Q126,32 142,40 Q138,48 110,56 Q82,48 78,40 Z" fill="{SK}" stroke="{INK}" stroke-width="1.8"/>'''
+    b += _neck(110,100); b += _head(110,64,22)
+    b += f'''<line x1="110" y1="24" x2="110" y2="8" stroke="{RED}" stroke-width="1.6"/>
+<path d="M104,14 L110,6 L116,14" fill="none" stroke="{RED}" stroke-width="1.6"/>
+<text x="110" y="2" text-anchor="middle" font-family="Georgia,serif" font-size="7.5" fill="{RED}">San Jiao</text>'''
+    return _svg(220,330,b)
 
 def fig_bogen():
-    return R(f'''<svg viewBox="0 0 310 278" xmlns="http://www.w3.org/2000/svg" width="288" height="258">
-{gnd(155,272,115)}
-{leg(130,204,104,224,68,272)}{leg(180,204,206,224,240,272)}
-{robe(155,78,128,98)}
-<path d="M147,78 C149,66 153,59 155,58 C157,59 161,66 163,78" fill="{SK}" stroke="{INK}" stroke-width="1.7" stroke-linecap="round"/>
-{head(149,43,22)}
-{arm(110,124,80,126,36,136)}
-<ellipse cx="34" cy="138" rx="9" ry="7" fill="{SK}" stroke="{INK}" stroke-width="1.8"/>
-<line x1="34" y1="131" x2="34" y2="116" stroke="{SK}" stroke-width="5" stroke-linecap="round"/>
-<line x1="34" y1="131" x2="34" y2="116" stroke="{INK}" stroke-width="1.8" stroke-linecap="round"/>
-{arm(200,124,218,116,244,114)}{hand(218,140)}
-<path d="M88,110 Q64,128 66,153 Q68,176 92,186" fill="none" stroke="{GOLD}" stroke-width="3" stroke-linecap="round"/>
+    b = _ground(155,272,115)
+    b += _leg(130,202,104,222,68,272); b += _leg(180,202,206,222,240,272)
+    b += _robe(155,78,128,98); b += _neck(155,78); b += _head(149,43,22)
+    b += _arm(110,124,80,126,36,136)
+    b += f'''<ellipse cx="34" cy="138" rx="9" ry="7" fill="{SK}" stroke="{INK}" stroke-width="1.8"/>
+<line x1="34" y1="131" x2="34" y2="116" stroke="{SK}" stroke-width="5"/>
+<line x1="34" y1="131" x2="34" y2="116" stroke="{INK}" stroke-width="1.8"/>'''
+    b += _arm(200,124,218,116,244,114); b += _hand(218,140)
+    b += f'''<path d="M88,110 Q64,128 66,153 Q68,176 92,186" fill="none" stroke="{GOLD}" stroke-width="3"/>
 <line x1="88" y1="110" x2="92" y2="186" stroke="{INK}" stroke-width="1" stroke-dasharray="2,2" opacity="0.45"/>
-<text x="22" y="120" text-anchor="end" font-family="Georgia,serif" font-size="7.5" fill="{RED}">BaZi</text>
-</svg>''')
+<text x="22" y="120" text-anchor="end" font-family="Georgia,serif" font-size="7.5" fill="{RED}">BaZi</text>'''
+    return _svg(310,278,b)
 
 def fig_san_bao():
-    return f'''<svg viewBox="0 0 320 290" xmlns="http://www.w3.org/2000/svg" width="300" height="272">
-<circle cx="160" cy="145" r="128" fill="none" stroke="{RED}" stroke-width="1" opacity="0.25"/>
+    return _svg(320,290,f'''<circle cx="160" cy="145" r="128" fill="none" stroke="{RED}" stroke-width="1" opacity="0.25"/>
 <polygon points="160,32 278,212 42,212" fill="none" stroke="{INK}" stroke-width="0.8" opacity="0.15" stroke-dasharray="4,4"/>
 <circle cx="160" cy="38" r="34" fill="#faf8f2" stroke="{RED}" stroke-width="2"/>
 <text x="160" y="34" text-anchor="middle" font-size="11" font-family="Georgia,serif" font-style="italic" fill="{INK}">Shen</text>
-<text x="160" y="48" text-anchor="middle" font-size="11" font-family="'Noto Serif CJK SC',serif" fill="{RED}">神</text>
+<text x="160" y="48" text-anchor="middle" font-size="11" font-family="Noto Serif CJK SC,serif" fill="{RED}">神</text>
 <circle cx="46" cy="222" r="34" fill="#faf8f2" stroke="{RED}" stroke-width="2"/>
 <text x="46" y="218" text-anchor="middle" font-size="11" font-family="Georgia,serif" font-style="italic" fill="{INK}">Jing</text>
-<text x="46" y="232" text-anchor="middle" font-size="11" font-family="'Noto Serif CJK SC',serif" fill="{RED}">精</text>
+<text x="46" y="232" text-anchor="middle" font-size="11" font-family="Noto Serif CJK SC,serif" fill="{RED}">精</text>
 <circle cx="274" cy="222" r="34" fill="#faf8f2" stroke="{RED}" stroke-width="2"/>
 <text x="274" y="218" text-anchor="middle" font-size="11" font-family="Georgia,serif" font-style="italic" fill="{INK}">Qi</text>
-<text x="274" y="232" text-anchor="middle" font-size="11" font-family="'Noto Serif CJK SC',serif" fill="{RED}">氣</text>
+<text x="274" y="232" text-anchor="middle" font-size="11" font-family="Noto Serif CJK SC,serif" fill="{RED}">氣</text>
 <circle cx="160" cy="150" r="5" fill="{RED}"/>
-<text x="160" y="145" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="{RED}" opacity="0.7">San Bao 三寶</text>
-<text x="160" y="168" text-anchor="middle" font-size="8" font-family="Georgia,serif" fill="{RED}">Die drei Schätze</text>
 <text x="160" y="78" text-anchor="middle" font-size="7.5" font-family="Georgia,serif" fill="{RED}">Geist</text>
 <text x="46" y="262" text-anchor="middle" font-size="7.5" font-family="Georgia,serif" fill="{RED}">Essenz</text>
-<text x="274" y="262" text-anchor="middle" font-size="7.5" font-family="Georgia,serif" fill="{RED}">Energie</text>
-</svg>'''
+<text x="274" y="262" text-anchor="middle" font-size="7.5" font-family="Georgia,serif" fill="{RED}">Energie</text>''')
 
 def fig_rain():
     def box(x,l,de,l1,l2):
-        return f'<rect x="{x}" y="4" width="80" height="104" rx="7" fill="#faf8f2" stroke="{RED}" stroke-width="1.8"/><text x="{x+40}" y="34" text-anchor="middle" font-family="Georgia,serif" font-size="26pt" fill="{RED}" font-weight="bold">{l}</text><text x="{x+40}" y="60" text-anchor="middle" font-family="Georgia,serif" font-size="8.5pt" fill="{INK}">{de}</text><text x="{x+40}" y="80" text-anchor="middle" font-family="Georgia,serif" font-size="7pt" fill="{INK}">{l1}</text><text x="{x+40}" y="92" text-anchor="middle" font-family="Georgia,serif" font-size="7pt" fill="{INK}">{l2}</text>'
-    return f'<svg viewBox="0 0 360 116" xmlns="http://www.w3.org/2000/svg" width="350" height="113">{box(4,"R","Erkennen","In welchem","Zustand bin ich?")}{box(94,"A","Akzeptieren","Situation","annehmen")}{box(184,"I","Untersuchen","Woher kommt","dieser Zustand?")}{box(274,"N","Non-Id.","Ich bin nicht","mein Gedanke")}</svg>'
+        return f'''<rect x="{x}" y="4" width="80" height="104" rx="7" fill="#faf8f2" stroke="{RED}" stroke-width="1.8"/>
+<text x="{x+40}" y="34" text-anchor="middle" font-family="Georgia,serif" font-size="26pt" fill="{RED}" font-weight="bold">{l}</text>
+<text x="{x+40}" y="60" text-anchor="middle" font-family="Georgia,serif" font-size="8.5pt" fill="#1a1208">{de}</text>
+<text x="{x+40}" y="80" text-anchor="middle" font-family="Georgia,serif" font-size="7pt" fill="#1a1208">{l1}</text>
+<text x="{x+40}" y="92" text-anchor="middle" font-family="Georgia,serif" font-size="7pt" fill="#1a1208">{l2}</text>'''
+    return _svg(360,116,box(4,"R","Erkennen","In welchem","Zustand?")+box(94,"A","Akzeptieren","Situation","annehmen")+box(184,"I","Untersuchen","Woher kommt","der Zustand?")+box(274,"N","Non-Id.","Ich bin nicht","mein Gedanke"))
 
 def fig_five():
-    return f'''<svg viewBox="0 0 360 120" xmlns="http://www.w3.org/2000/svg" width="350" height="117">
-<g transform="translate(36,15)"><path d="M0,58 C-6,42 -10,26 0,8 C5,20 10,12 15,58Z" fill="none" stroke="{RED}" stroke-width="2.4" stroke-linecap="round"/>
-<text x="8" y="76" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="{INK}">Begehren</text></g>
-<g transform="translate(94,10)"><path d="M2,38 Q0,20 12,20 Q14,11 22,14 Q30,5 38,14 Q47,12 47,22 Q53,22 53,32 Q53,42 45,42 L9,42 Q1,42 2,38Z" fill="none" stroke="{RED}" stroke-width="2.4" stroke-linecap="round"/>
-<path d="M25,42 L21,54 L27,52 L23,66" fill="none" stroke="{RED}" stroke-width="2" stroke-linecap="round"/>
-<text x="27" y="81" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="{INK}">Übelwollen</text></g>
-<g transform="translate(178,15)"><rect x="0" y="0" width="46" height="46" rx="5" fill="none" stroke="{RED}" stroke-width="2.4"/>
-<path d="M8,16 L38,16 M8,25 L38,25 M8,34 L38,34" stroke="{RED}" stroke-width="2" stroke-linecap="round"/>
-<path d="M23,46 L23,62 M14,62 L32,62" stroke="{RED}" stroke-width="2.2" stroke-linecap="round"/>
-<text x="23" y="78" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="{INK}">Trägheit</text></g>
-<g transform="translate(250,10)"><path d="M25,25 C25,12 37,8 39,18 C41,29 31,35 23,29 C15,23 19,11 29,9" fill="none" stroke="{RED}" stroke-width="2.4" stroke-linecap="round"/>
+    return _svg(360,120,f'''<g transform="translate(36,15)">
+<path d="M0,58 C-6,42 -10,26 0,8 C5,20 10,12 15,58 Z" fill="none" stroke="{RED}" stroke-width="2.4"/>
+<text x="8" y="76" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="#1a1208">Begehren</text></g>
+<g transform="translate(94,10)">
+<path d="M2,38 Q0,20 12,20 Q14,11 22,14 Q30,5 38,14 Q47,12 47,22 Q53,22 53,32 Q53,42 45,42 L9,42 Q1,42 2,38 Z" fill="none" stroke="{RED}" stroke-width="2.4"/>
+<path d="M25,42 L21,54 L27,52 L23,66" fill="none" stroke="{RED}" stroke-width="2"/>
+<text x="27" y="81" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="#1a1208">Übelwollen</text></g>
+<g transform="translate(178,15)">
+<rect x="0" y="0" width="46" height="46" rx="5" fill="none" stroke="{RED}" stroke-width="2.4"/>
+<path d="M8,16 L38,16 M8,25 L38,25 M8,34 L38,34" stroke="{RED}" stroke-width="2"/>
+<path d="M23,46 L23,62 M14,62 L32,62" stroke="{RED}" stroke-width="2.2"/>
+<text x="23" y="78" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="#1a1208">Trägheit</text></g>
+<g transform="translate(250,10)">
+<path d="M25,25 C25,12 37,8 39,18 C41,29 31,35 23,29 C15,23 19,11 29,9" fill="none" stroke="{RED}" stroke-width="2.4"/>
 <circle cx="25" cy="42" r="3" fill="{RED}"/>
-<text x="25" y="56" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="{INK}">Unruhe</text></g>
-<g transform="translate(305,10)"><path d="M22,8 Q32,2 34,12 Q36,23 22,28 L22,35" fill="none" stroke="{RED}" stroke-width="2.6" stroke-linecap="round"/>
+<text x="25" y="56" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="#1a1208">Unruhe</text></g>
+<g transform="translate(305,10)">
+<path d="M22,8 Q32,2 34,12 Q36,23 22,28 L22,35" fill="none" stroke="{RED}" stroke-width="2.6"/>
 <circle cx="22" cy="42" r="3.5" fill="{RED}"/>
-<text x="22" y="57" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="{INK}">Zweifel</text></g>
-</svg>'''
+<text x="22" y="57" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="#1a1208">Zweifel</text></g>''')
 
 def fig_atem():
-    return f'''<svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg" width="345" height="173">
-<ellipse cx="145" cy="90" rx="56" ry="72" fill="none" stroke="{INK}" stroke-width="1" opacity="0.2"/>
-<path d="M145,32 L145,108" fill="none" stroke="{RED}" stroke-width="2.2" stroke-linecap="round"/>
-<path d="M138,100 L145,110 L152,100" fill="none" stroke="{RED}" stroke-width="2" stroke-linecap="round"/>
+    return _svg(360,180,f'''<ellipse cx="145" cy="90" rx="56" ry="72" fill="none" stroke="#1a1208" stroke-width="1" opacity="0.2"/>
+<path d="M145,32 L145,108" fill="none" stroke="{RED}" stroke-width="2.2"/>
+<path d="M138,100 L145,110 L152,100" fill="none" stroke="{RED}" stroke-width="2"/>
 <ellipse cx="145" cy="124" rx="30" ry="22" fill="none" stroke="{RED}" stroke-width="1.8" stroke-dasharray="3,2" opacity="0.72"/>
 <circle cx="145" cy="124" r="6" fill="{RED}" opacity="0.28"/>
-<path d="M230,45 Q244,30 258,45 Q272,60 286,45 Q300,30 315,45" fill="none" stroke="{RED}" stroke-width="2.2" stroke-linecap="round"/>
-<path d="M230,85 Q248,62 266,85 Q284,108 302,85" fill="none" stroke="{RED}" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/>
+<path d="M230,45 Q244,30 258,45 Q272,60 286,45 Q300,30 315,45" fill="none" stroke="{RED}" stroke-width="2.2"/>
+<path d="M230,85 Q248,62 266,85 Q284,108 302,85" fill="none" stroke="{RED}" stroke-width="1.6" opacity="0.55"/>
 <text x="32" y="48" font-family="Georgia,serif" font-size="8.5pt" fill="{RED}">Einatmen</text>
-<text x="32" y="105" font-family="Georgia,serif" font-size="8.5pt" fill="{INK}">Ausatmen</text>
+<text x="32" y="105" font-family="Georgia,serif" font-size="8.5pt" fill="#1a1208">Ausatmen</text>
 <text x="145" y="156" text-anchor="middle" font-family="Georgia,serif" font-size="8.5pt" fill="{RED}">Dan Tian</text>
-<text x="272" y="28" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="{RED}">Atemwellen</text>
-</svg>'''
+<text x="272" y="28" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="{RED}">Atemwellen</text>''')
 
-# ─── CSS ────────────────────────────────────────────────────────────────────
+
+def _to_img(svg_str, caption='', scale=2):
+    png = cairosvg.svg2png(bytestring=svg_str.encode(), scale=scale)
+    b64 = base64.b64encode(png).decode()
+    cap = f'<div class="ic">{caption}</div>' if caption else ''
+    return f'<div class="ib"><img src="data:image/png;base64,{b64}" style="display:block;margin:0 auto;max-width:100%;"/>{cap}</div>'
+
+def _to_img_inline(svg_str, scale=2):
+    png = cairosvg.svg2png(bytestring=svg_str.encode(), scale=scale)
+    b64 = base64.b64encode(png).decode()
+    return f'<img src="data:image/png;base64,{b64}" style="display:block;"/>'
 
 CSS = """
 @page {size:A4;margin:24mm 22mm 28mm 24mm;
