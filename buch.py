@@ -192,13 +192,13 @@ def fig_san_bao():
 <polygon points="160,32 278,212 42,212" fill="none" stroke="{INK}" stroke-width="0.8" opacity="0.15" stroke-dasharray="4,4"/>
 <circle cx="160" cy="38" r="34" fill="#faf8f2" stroke="{RED}" stroke-width="2"/>
 <text x="160" y="34" text-anchor="middle" font-size="11" font-family="Georgia,serif" font-style="italic" fill="{INK}">Shen</text>
-<text x="160" y="48" text-anchor="middle" font-size="11" font-family="Noto Serif CJK SC,serif" fill="{RED}">神</text>
+<text x="160" y="48" text-anchor="middle" font-size="11" font-family="Noto Serif CJK SC,serif" fill="{RED}"></text>
 <circle cx="46" cy="222" r="34" fill="#faf8f2" stroke="{RED}" stroke-width="2"/>
 <text x="46" y="218" text-anchor="middle" font-size="11" font-family="Georgia,serif" font-style="italic" fill="{INK}">Jing</text>
-<text x="46" y="232" text-anchor="middle" font-size="11" font-family="Noto Serif CJK SC,serif" fill="{RED}">精</text>
+<text x="46" y="232" text-anchor="middle" font-size="11" font-family="Noto Serif CJK SC,serif" fill="{RED}"></text>
 <circle cx="274" cy="222" r="34" fill="#faf8f2" stroke="{RED}" stroke-width="2"/>
 <text x="274" y="218" text-anchor="middle" font-size="11" font-family="Georgia,serif" font-style="italic" fill="{INK}">Qi</text>
-<text x="274" y="232" text-anchor="middle" font-size="11" font-family="Noto Serif CJK SC,serif" fill="{RED}">氣</text>
+<text x="274" y="232" text-anchor="middle" font-size="11" font-family="Noto Serif CJK SC,serif" fill="{RED}"></text>
 <circle cx="160" cy="150" r="5" fill="{RED}"/>
 <text x="160" y="78" text-anchor="middle" font-size="7.5" font-family="Georgia,serif" fill="{RED}">Geist</text>
 <text x="46" y="262" text-anchor="middle" font-size="7.5" font-family="Georgia,serif" fill="{RED}">Essenz</text>
@@ -247,6 +247,99 @@ def fig_atem():
 <text x="32" y="105" font-family="Georgia,serif" font-size="8.5pt" fill="#1a1208">Ausatmen</text>
 <text x="145" y="156" text-anchor="middle" font-family="Georgia,serif" font-size="8.5pt" fill="{RED}">Dan Tian</text>
 <text x="272" y="28" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="{RED}">Atemwellen</text>''')
+
+
+def fig_fist():
+    b = _ground(140,300,60)
+    b += _leg(126,200,120,240,116,300); b += _leg(154,200,160,240,164,300)
+    b += _robe(140,76,170,90); b += _neck(140,76); b += _head(140,42,22)
+    b += _arm(108,128,98,170,96,212); b += _arm(172,128,182,170,184,212)
+    b += f'''<circle cx="96" cy="222" r="13" fill="{SK}" stroke="{INK}" stroke-width="1.8"/>
+<path d="M88,217 L104,217 M88,222 L104,222 M88,227 L104,227" stroke="{INK}" stroke-width="0.9" opacity="0.55"/>
+<circle cx="184" cy="222" r="13" fill="{SK}" stroke="{INK}" stroke-width="1.8"/>
+<path d="M176,217 L192,217 M176,222 L192,222 M176,227 L192,227" stroke="{INK}" stroke-width="0.9" opacity="0.55"/>
+<path d="M90,206 Q86,200 90,196" fill="none" stroke="{RED}" stroke-width="1.2" opacity="0.7"/>
+<path d="M82,200 Q78,196 80,190" fill="none" stroke="{RED}" stroke-width="1.2" opacity="0.7"/>
+<path d="M190,206 Q194,200 190,196" fill="none" stroke="{RED}" stroke-width="1.2" opacity="0.7"/>
+<path d="M198,200 Q202,196 200,190" fill="none" stroke="{RED}" stroke-width="1.2" opacity="0.7"/>
+<text x="70" y="240" text-anchor="end" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Faust fest</text>
+<text x="210" y="240" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Spannung halten</text>
+<text x="140" y="20" text-anchor="middle" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Krone aufrichten</text>
+<line x1="140" y1="26" x2="140" y2="36" stroke="{RED}" stroke-width="1.3"/>
+<path d="M134,32 L140,40 L146,32" fill="none" stroke="{RED}" stroke-width="1.3"/>'''
+    return _svg(280,308,b)
+
+
+def fig_lbend():
+    b = _ground(150,288,70)
+    b += _leg(140,206,134,246,128,288); b += _leg(170,206,176,246,182,288)
+    b += f'''<path d="M138,188 C100,184 60,178 36,170 C30,168 28,160 32,156 C36,152 56,154 80,158 C108,162 142,166 158,176 Z"
+fill="#2a1a0a" fill-opacity="0.12" stroke="{INK}" stroke-width="2.2"/>
+<path d="M40,168 Q50,166 60,166" fill="none" stroke="{INK}" stroke-width="0.8" opacity="0.28"/>
+<path d="M80,166 Q92,166 110,170" fill="none" stroke="{INK}" stroke-width="0.65" opacity="0.18"/>
+<path d="M30,158 Q26,164 30,170" fill="{SK}" stroke="{INK}" stroke-width="1.7"/>
+<ellipse cx="22" cy="170" rx="14" ry="17" fill="{SK}" stroke="{INK}" stroke-width="2"/>
+<path d="M14,168 Q22,160 30,168" fill="{SD}" stroke="none" opacity="0.25"/>
+<path d="M44,162 Q46,200 48,238" fill="none" stroke="{INK}" stroke-width="9" stroke-linecap="round" opacity="0.10"/>
+<path d="M44,162 Q46,200 48,238" fill="none" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M64,166 Q66,204 68,242" fill="none" stroke="{INK}" stroke-width="9" stroke-linecap="round" opacity="0.10"/>
+<path d="M64,166 Q66,204 68,242" fill="none" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>
+<ellipse cx="50" cy="246" rx="9" ry="6" fill="{SK}" stroke="{INK}" stroke-width="1.6"/>
+<ellipse cx="70" cy="250" rx="9" ry="6" fill="{SK}" stroke="{INK}" stroke-width="1.6"/>
+<path d="M40,258 Q44,262 48,258 Q52,262 56,258" fill="none" stroke="{RED}" stroke-width="1.3"/>
+<path d="M60,262 Q64,266 68,262 Q72,266 76,262" fill="none" stroke="{RED}" stroke-width="1.3"/>
+<path d="M40,266 Q44,270 48,266" fill="none" stroke="{RED}" stroke-width="1" opacity="0.6"/>
+<path d="M60,270 Q64,274 68,270" fill="none" stroke="{RED}" stroke-width="1" opacity="0.6"/>
+<path d="M155,200 L155,182 L40,160" fill="none" stroke="{RED}" stroke-width="1" stroke-dasharray="3,2" opacity="0.55"/>
+<text x="100" y="146" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Wirbelsäule 90°</text>
+<text x="58" y="282" text-anchor="middle" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Ausschütteln</text>
+<text x="200" y="206" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Hüftgelenk</text>
+<circle cx="155" cy="200" r="3" fill="{RED}"/>'''
+    return _svg(310,296,b)
+
+
+def fig_sidearms():
+    b = _ground(180,290,75)
+    b += _leg(166,200,160,240,156,290); b += _leg(194,200,200,240,204,290)
+    b += _robe(180,76,168,92); b += _neck(180,76); b += _head(180,42,22)
+    b += f'''<path d="M148,124 Q90,124 32,130" fill="none" stroke="{INK}" stroke-width="9" stroke-linecap="round" opacity="0.10"/>
+<path d="M148,124 Q90,124 32,130" fill="none" stroke="{INK}" stroke-width="2.4" stroke-linecap="round"/>
+<path d="M212,124 Q270,124 328,130" fill="none" stroke="{INK}" stroke-width="9" stroke-linecap="round" opacity="0.10"/>
+<path d="M212,124 Q270,124 328,130" fill="none" stroke="{INK}" stroke-width="2.4" stroke-linecap="round"/>
+<ellipse cx="28" cy="132" rx="10" ry="7" fill="{SK}" stroke="{INK}" stroke-width="1.7"/>
+<line x1="20" y1="128" x2="6" y2="124" stroke="{INK}" stroke-width="1.4"/>
+<line x1="18" y1="132" x2="2" y2="132" stroke="{RED}" stroke-width="2"/>
+<line x1="20" y1="136" x2="6" y2="140" stroke="{INK}" stroke-width="1.4"/>
+<line x1="22" y1="139" x2="10" y2="146" stroke="{INK}" stroke-width="1.4"/>
+<ellipse cx="332" cy="132" rx="10" ry="7" fill="{SK}" stroke="{INK}" stroke-width="1.7"/>
+<line x1="340" y1="128" x2="354" y2="124" stroke="{INK}" stroke-width="1.4"/>
+<line x1="342" y1="132" x2="358" y2="132" stroke="{RED}" stroke-width="2"/>
+<line x1="340" y1="136" x2="354" y2="140" stroke="{INK}" stroke-width="1.4"/>
+<line x1="338" y1="139" x2="350" y2="146" stroke="{INK}" stroke-width="1.4"/>
+<path d="M0,132 L-8,128 M0,132 L-8,136" fill="none" stroke="{RED}" stroke-width="1.5"/>
+<path d="M360,132 L368,128 M360,132 L368,136" fill="none" stroke="{RED}" stroke-width="1.5"/>
+<text x="180" y="100" text-anchor="middle" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Schultern fallen lassen</text>
+<path d="M148,108 Q156,102 164,106" fill="none" stroke="{RED}" stroke-width="0.9" opacity="0.6"/>
+<path d="M196,106 Q204,102 212,108" fill="none" stroke="{RED}" stroke-width="0.9" opacity="0.6"/>
+<text x="40" y="160" text-anchor="middle" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Mittelfinger zieht</text>
+<text x="320" y="160" text-anchor="middle" font-family="Georgia,serif" font-size="7.5" fill="{RED}">Mittelfinger zieht</text>'''
+    return _svg(370,300,b)
+
+
+def fig_progression():
+    weeks = [19, 24, 32, 36, 42, 49]
+    body = ''
+    barW = 36; gap = 18; baseX = 40; baseY = 130
+    for i,m in enumerate(weeks):
+        x = baseX + i*(barW+gap)
+        h = int(m*1.9)
+        body += f'<rect x="{x}" y="{baseY-h}" width="{barW}" height="{h}" fill="{RED}" opacity="{0.45+i*0.09:.2f}"/>'
+        body += f'<text x="{x+barW//2}" y="{baseY-h-4}" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="{INK}" font-weight="bold">{m}</text>'
+        body += f'<text x="{x+barW//2}" y="{baseY+12}" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="{INK}">W{i+1}</text>'
+    body += f'<line x1="20" y1="{baseY}" x2="350" y2="{baseY}" stroke="{INK}" stroke-width="1.4"/>'
+    body += f'<text x="20" y="20" font-family="Georgia,serif" font-size="9pt" fill="{RED}" font-weight="bold">Minuten / Tag</text>'
+    body += f'<text x="350" y="148" text-anchor="end" font-family="Georgia,serif" font-size="7.5" fill="{INK}" font-style="italic">6-Wochen-Progression</text>'
+    return _svg(360,160,body)
 
 
 def _to_img(name, caption=''):
@@ -331,7 +424,7 @@ def ch(num, rom, cn, title, sub):
 <div style="font-size:10pt;color:#8B1A0E;letter-spacing:5px;margin-bottom:4mm;">{num}</div>
 <div style="font-size:44pt;color:#8B1A0E;font-weight:bold;opacity:.32;margin-bottom:2mm;line-height:1;">{rom}</div>
 <div style="width:52mm;height:1px;background:#8B1A0E;margin:5mm auto;opacity:.42;"></div>
-<div style="font-family:'Noto Serif CJK SC',serif;font-size:28pt;color:#8B1A0E;margin-bottom:5mm;opacity:.62;">{cn}</div>
+{(f'<div style="font-size:14pt;color:#8B1A0E;letter-spacing:6px;font-style:italic;margin-bottom:5mm;opacity:.78;">{cn}</div>' if cn else '')}
 <div style="font-size:21pt;font-weight:bold;margin-bottom:3mm;">{title}</div>
 <div style="width:52mm;height:1px;background:#8B1A0E;margin:5mm auto;opacity:.42;"></div>
 <div style="font-size:11pt;color:#c8b98a;font-style:italic;max-width:112mm;margin:0 auto;">{sub}</div>
@@ -341,15 +434,14 @@ def sn(n): return f'<span class="sn">{n}</span>'
 
 def cover():
     return f'''<div class="cov">
-<div style="color:#8B1A0E;font-size:13pt;letter-spacing:4px;margin-bottom:5mm;">— 三 修 —</div>
-<div style="font-family:'Noto Serif CJK SC',serif;font-size:52pt;color:#8B1A0E;margin-bottom:3mm;letter-spacing:8px;">三修</div>
+<div style="color:#8B1A0E;font-size:13pt;letter-spacing:4px;margin-bottom:5mm;">— SAN XIU —</div>
 <div style="font-size:24pt;font-weight:bold;letter-spacing:5px;margin-bottom:4mm;text-transform:uppercase;">SAN XIU</div>
 <div style="font-size:12.5pt;color:#c8b98a;font-style:italic;margin-bottom:9mm;">Der dreifache Weg: Körper, Atem, Geist</div>
 <div style="width:72mm;height:1px;background:#8B1A0E;margin:5mm auto;opacity:.52;"></div>
 <div style="margin:6mm 0;">{fig_bodhi()}</div>
 <div style="width:72mm;height:1px;background:#8B1A0E;margin:5mm auto;opacity:.52;"></div>
 <div style="font-size:9pt;color:#8B1A0E;letter-spacing:2px;opacity:.8;margin-bottom:3mm;">Zhan Zhuang · Chan-Meditation · Shaolin Qigong</div>
-<div style="font-size:9pt;color:#8B1A0E;letter-spacing:2px;opacity:.8;margin-bottom:3mm;">Inspiriert von Meister Shi Heng Yi (釋恒義) · 35. Generation Shaolin</div>
+<div style="font-size:9pt;color:#8B1A0E;letter-spacing:2px;opacity:.8;margin-bottom:3mm;">Inspiriert von Meister Shi Heng Yi · 35. Generation Shaolin</div>
 <div style="font-size:8pt;color:#8B1A0E;letter-spacing:1px;opacity:.52;margin-top:7mm;">Ein persönliches Trainingsbuch zur täglichen Praxis</div>
 </div>'''
 
@@ -357,7 +449,6 @@ def titelblatt():
     return f'''<div style="page-break-before:always;text-align:center;padding:18mm 16mm 0;">
 <div style="height:16mm;"></div>
 <div style="font-size:30pt;color:#8B1A0E;font-weight:bold;letter-spacing:4px;margin-bottom:2mm;">SAN XIU</div>
-<div style="font-family:'Noto Serif CJK SC',serif;font-size:19pt;color:#8B1A0E;opacity:.55;margin-bottom:5mm;">三修</div>
 <div style="font-size:13pt;color:#1a1208;font-style:italic;margin-bottom:11mm;">Der dreifache Weg: Körper, Atem, Geist</div>
 <div style="width:72mm;height:1.5px;background:#8B1A0E;margin:5mm auto;"></div>
 <p style="font-size:9pt;color:#5a4a3a;max-width:106mm;margin:5mm auto;line-height:1.75;text-align:center;">
@@ -366,10 +457,10 @@ verwurzelt in der 1500-jährigen Tradition des Shaolin-Klosters<br>
 und den zeitlosen Lehren von Bodhidharma (Da Mo).</p>
 <div style="width:72mm;height:1.5px;background:#8B1A0E;margin:5mm auto;"></div>
 <p style="font-size:8.5pt;color:#8B1A0E;text-align:center;max-width:106mm;margin:5mm auto;">
-Inspiriert von Meister Shi Heng Yi (釋恒義),<br>
+Inspiriert von Meister Shi Heng Yi,<br>
 35. Generation der Shaolin-Meister · Shaolin Temple Europe</p>
 <p style="font-size:8pt;color:#8B1A0E;font-style:italic;text-align:center;margin-top:5mm;">
-三修: San = Drei · Xiu = Kultivierung · Körper (身) · Atem (息) · Geist (神)</p>
+San Xiu — Drei · Kultivierung · Körper · Atem · Geist</p>
 </div>'''
 
 def toc():
@@ -398,9 +489,12 @@ def toc():
 {h("Teil V — Shaolin Qigong")}
 {p("Ba Duan Jin — Die Acht Brokate",55)}{p("Yi Jin Jing — Die 12 Übungen",60)}
 {p("Shu Jing Gong — Buddhistische Qigong-Form",64)}
+{h("Die vier Kernübungen — Dein täglicher Weg")}
+{p("Übung 1: Faust ballen &amp; halten",67)}{p("Übung 2: Ma Bu — Reiterhaltung",69)}
+{p("Übung 3: L-Stand mit Ausschütteln",71)}{p("Übung 4: Seitenarme &amp; Mittelfinger",73)}
 {h("Trainingsplan")}
-{p("6-Wochen-Progression · 13 Übungen",67)}{p("Tempel-Tagesrhythmus",69)}
-{p("Die sieben Praxis-Prinzipien",70)}
+{p("6-Wochen-Progression · 13 Übungen",76)}{p("Tempel-Tagesrhythmus",79)}
+{p("Die sieben Praxis-Prinzipien",80)}
 {h("Anhang")}
 {p("Ausgewählte Zitate — Shi Heng Yi",72)}{p("Glossar chinesischer Begriffe",75)}
 </div>'''
@@ -409,7 +503,6 @@ def einleitung():
     return f'''<div class="chd">
 <div style="font-size:10pt;color:#8B1A0E;letter-spacing:5px;margin-bottom:4mm;">Einleitung</div>
 <div style="width:52mm;height:1px;background:#8B1A0E;margin:5mm auto;opacity:.42;"></div>
-<div style="font-family:'Noto Serif CJK SC',serif;font-size:28pt;color:#8B1A0E;margin-bottom:5mm;opacity:.62;">序言</div>
 <div style="font-size:21pt;font-weight:bold;margin-bottom:3mm;">Der Weg des Selbst</div>
 <div style="width:52mm;height:1px;background:#8B1A0E;margin:5mm auto;opacity:.42;"></div>
 <div style="font-size:11pt;color:#c8b98a;font-style:italic;max-width:112mm;margin:4mm auto;">„Um deinem Leben Bedeutung zu geben, musst du dich selbst kennenlernen und meistern."<br><em>— Shi Heng Yi</em></div>
@@ -418,7 +511,7 @@ def einleitung():
 <h2 class="t2" style="page-break-before:avoid;">Der Berg und der Aufstieg</h2>
 <p class="intro">Ein Mann lebte am Fuß eines Berges. Jeden Tag betrachtete er den Gipfel. Als er aufbrach, fragte er dreißig Wanderer. Nach all den Berichten entschied er: Da so viele den Berg bereits bestiegen haben, muss ich nicht mehr selbst hinauf. Der Mann begann die Reise nie.</p>
 <p>Diese Parabel trifft das Wesen allen Strebens: Kein Buch, kein Lehrer kann dir ersetzen, selbst auf dem Gipfel zu stehen. Worte zeigen den Weg. Gegangen werden muss er von dir.</p>
-<p><strong>San Xiu</strong> (三修) — der dreifache Weg — bezeichnet die gleichzeitige Kultivierung von Körper, Atem und Geist. Nicht Körper <em>oder</em> Geist. Nicht Training <em>oder</em> Meditation. Alles, gleichzeitig, täglich.</p>
+<p><strong>San Xiu</strong> — der dreifache Weg — bezeichnet die gleichzeitige Kultivierung von Körper, Atem und Geist. Nicht Körper <em>oder</em> Geist. Nicht Training <em>oder</em> Meditation. Alles, gleichzeitig, täglich.</p>
 <h2 class="t2">Über dieses Buch</h2>
 <div class="row">
 <div class="col"><div class="cb"><div class="ct">Shaolin-Tradition</div>
@@ -432,65 +525,65 @@ def einleitung():
 </div>'''
 
 def teil1():
-    return f'''{ch("Teil I","I","哲學","Philosophische Grundlagen","Die Wurzeln verstehen, bevor du die Äste erklimmst.")}
+    return f'''{ch("Teil I","I","","Philosophische Grundlagen","Die Wurzeln verstehen, bevor du die Äste erklimmst.")}
 <div class="content">
-<div class="ib">{fig_san_bao()}<div class="ic">Die drei Schätze — San Bao 三寶 · Jing nährt Qi · Qi trägt Shen · Shen lenkt Jing</div></div>
-<div class="si"><span class="sc">精</span><div class="sh">Jing — Die Essenz</div>
+<div class="ib">{fig_san_bao()}<div class="ic">Die drei Schätze — San Bao · Jing nährt Qi · Qi trägt Shen · Shen lenkt Jing</div></div>
+<div class="si"><div class="sh">Jing — Die Essenz</div>
 <p style="font-size:10.5pt;margin-bottom:0;">Jing ist die dichteste Lebensenergie, in den Nieren gespeichert. Vorgeburtliches Jing ist endlich; nachgeburtliches Jing wird durch Schlaf, Ernährung und Qigong täglich erneuert. Zhan Zhuang und Yi Jin Jing kultivieren Jing direkt.</p></div>
-<div class="si"><span class="sc">氣</span><div class="sh">Qi — Die Lebensenergie</div>
+<div class="si"><div class="sh">Qi — Die Lebensenergie</div>
 <p style="font-size:10.5pt;margin-bottom:0;">Qi ist Bewegung, Fluss, Lebenskraft — animiert Körper und Geist, fließt durch Meridiane. <em>„Wo deine Aufmerksamkeit hingeht, fließt deine Energie."</em></p></div>
-<div class="si"><span class="sc">神</span><div class="sh">Shen — Der Geist</div>
+<div class="si"><div class="sh">Shen — Der Geist</div>
 <p style="font-size:10.5pt;margin-bottom:0;">Shen ist Bewusstsein, Präsenz, Klarheit — sichtbar in den Augen. <em>„Wenn der See still ist, siehst du den Grund."</em></p></div>
 <div class="cb"><div class="ct">Transformation</div>
 <p style="font-size:10pt;"><strong>Jing → Qi</strong> durch Körperpraxis &nbsp;·&nbsp; <strong>Qi → Shen</strong> durch Atem &nbsp;·&nbsp; <strong>Shen → Wuji</strong> durch Meditation</p></div>
 <hr class="or">
 <h2 class="t2">Wu De — Die 14 Tugenden</h2>
 <div class="row"><div class="col"><div class="kp">
-<p><strong>Jì Lǜ (紀律)</strong> — Disziplin</p><p><strong>Zì Zhì (自制)</strong> — Selbstkontrolle</p>
-<p><strong>Qiān Xū (謙虛)</strong> — Bescheidenheit</p><p><strong>Cí Bēi (慈悲)</strong> — Mitgefühl</p>
-<p><strong>Qiān Xùn (謙遜)</strong> — Demut</p><p><strong>Zūn Jìng (尊敬)</strong> — Respekt</p>
-<p><strong>Zhèng Yì (正義)</strong> — Rechtschaffenheit</p>
+<p><strong>Jì Lǜ</strong> — Disziplin</p><p><strong>Zì Zhì</strong> — Selbstkontrolle</p>
+<p><strong>Qiān Xū</strong> — Bescheidenheit</p><p><strong>Cí Bēi</strong> — Mitgefühl</p>
+<p><strong>Qiān Xùn</strong> — Demut</p><p><strong>Zūn Jìng</strong> — Respekt</p>
+<p><strong>Zhèng Yì</strong> — Rechtschaffenheit</p>
 </div></div><div class="col"><div class="kp">
-<p><strong>Xìn Yòng (信用)</strong> — Vertrauen</p><p><strong>Zhōng Chéng (忠誠)</strong> — Loyalität</p>
-<p><strong>Yì Yuàn (意願)</strong> — Wille</p><p><strong>Rěn Nài (忍耐)</strong> — Beharrlichkeit</p>
-<p><strong>Yì Lì (毅力)</strong> — Beständigkeit</p><p><strong>Nài Xīn (耐心)</strong> — Geduld</p>
-<p><strong>Yǒng Gǎn (勇敢)</strong> — Mut</p>
+<p><strong>Xìn Yòng</strong> — Vertrauen</p><p><strong>Zhōng Chéng</strong> — Loyalität</p>
+<p><strong>Yì Yuàn</strong> — Wille</p><p><strong>Rěn Nài</strong> — Beharrlichkeit</p>
+<p><strong>Yì Lì</strong> — Beständigkeit</p><p><strong>Nài Xīn</strong> — Geduld</p>
+<p><strong>Yǒng Gǎn</strong> — Mut</p>
 </div></div></div>
 <hr class="or">
 <h2 class="t2">Die fünf Hindernisse zur Selbstmeisterschaft</h2>
 <div class="ib">{fig_five()}<div class="ic">Pañca Nīvaraṇa — aus Shi Heng Yis TEDx-Talk (17 Mio. Aufrufe)</div></div>
-<div class="hb"><div class="ht">1. Sinnesbegehren <span class="hp">Kamacchanda 欲欲</span></div>
+<div class="hb"><div class="ht">1. Sinnesbegehren <span class="hp">Kamacchanda</span></div>
 <p style="font-size:10.5pt;margin-top:2mm;">Wenn Angenehmes zur Obsession wird. Frage: Bin ich süchtig — oder wähle ich frei?</p></div>
-<div class="hb"><div class="ht">2. Übelwollen <span class="hp">Byapada 瞋恚</span></div>
+<div class="hb"><div class="ht">2. Übelwollen <span class="hp">Byapada</span></div>
 <p style="font-size:10.5pt;margin-top:2mm;">Ablehnung gegen Situation, Mensch, Umstand. <em>„Dann wird jede Reise Kampf."</em></p></div>
-<div class="hb"><div class="ht">3. Trägheit &amp; Mattheit <span class="hp">Thinamiddha 昏沉</span></div>
+<div class="hb"><div class="ht">3. Trägheit &amp; Mattheit <span class="hp">Thinamiddha</span></div>
 <p style="font-size:10.5pt;margin-top:2mm;">Schwere des Körpers, Dumpfheit des Geistes. Weg: Inspiration erinnern. Kleinen Schritt machen.</p></div>
-<div class="hb"><div class="ht">4. Unruhe <span class="hp">Uddhacca 掉举</span></div>
+<div class="hb"><div class="ht">4. Unruhe <span class="hp">Uddhacca</span></div>
 <p style="font-size:10.5pt;margin-top:2mm;">Der Affengeist springt zwischen Vergangenheit und Zukunft. Weg: Atem als Anker. RAIN anwenden.</p></div>
-<div class="hb"><div class="ht">5. Skeptischer Zweifel <span class="hp">Vicikiccha 疑</span></div>
+<div class="hb"><div class="ht">5. Skeptischer Zweifel <span class="hp">Vicikiccha</span></div>
 <p style="font-size:10.5pt;margin-top:2mm;">Lähmende Unentschlossenheit. Frage: Trennt mein Zweifel mich von meinen Zielen?</p></div>
 <h2 class="t2">Die RAIN-Methode</h2>
 <div class="ib">{fig_rain()}</div>
 <div class="qb">„Lass es einfach regnen." &nbsp;·&nbsp; <em>Just let it RAIN.</em><div class="au">— Shi Heng Yi (TEDxVitosha)</div></div>
 <hr class="or">
-<h2 class="t2">Die fünf Elemente — Wu Xing 五行</h2>
+<h2 class="t2">Die fünf Elemente — Wu Xing — Die fünf Wandlungsphasen</h2>
 <table class="pl">
 <thead><tr><th>Element</th><th>Organ</th><th>Emotion</th><th>Heilton</th><th>Jahreszeit</th></tr></thead>
 <tbody>
-<tr><td><strong>Holz 木</strong></td><td>Leber / Gallenblase</td><td>Wut · Kreativität</td><td>Xu (虛)</td><td>Frühling</td></tr>
-<tr><td><strong>Feuer 火</strong></td><td>Herz / Dünndarm</td><td>Freude · Aufregung</td><td>Ha (哈)</td><td>Sommer</td></tr>
-<tr><td><strong>Erde 土</strong></td><td>Milz / Magen</td><td>Sorge · Grübeln</td><td>Hu (呼)</td><td>Spätsommer</td></tr>
-<tr><td><strong>Metall 金</strong></td><td>Lunge / Dickdarm</td><td>Trauer · Loslassen</td><td>Si (嘶)</td><td>Herbst</td></tr>
-<tr><td><strong>Wasser 水</strong></td><td>Nieren / Blase</td><td>Angst · Weisheit</td><td>Chui (吹)</td><td>Winter</td></tr>
+<tr><td><strong>Holz</strong></td><td>Leber / Gallenblase</td><td>Wut · Kreativität</td><td>Xu</td><td>Frühling</td></tr>
+<tr><td><strong>Feuer</strong></td><td>Herz / Dünndarm</td><td>Freude · Aufregung</td><td>Ha</td><td>Sommer</td></tr>
+<tr><td><strong>Erde</strong></td><td>Milz / Magen</td><td>Sorge · Grübeln</td><td>Hu</td><td>Spätsommer</td></tr>
+<tr><td><strong>Metall</strong></td><td>Lunge / Dickdarm</td><td>Trauer · Loslassen</td><td>Si</td><td>Herbst</td></tr>
+<tr><td><strong>Wasser</strong></td><td>Nieren / Blase</td><td>Angst · Weisheit</td><td>Chui</td><td>Winter</td></tr>
 </tbody></table>
 </div>'''
 
 def teil2():
     sub2 = '&#8222;Der Atem ist immer im Hier und Jetzt.&#8220;<br><em>&#8212; Shi Heng Yi</em>'
-    return f'''{ch("Teil II","II","禪定","Chan-Meditation",sub2)}
+    return f'''{ch("Teil II","II","","Chan-Meditation",sub2)}
 <div class="content">
 <h2 class="t2" style="page-break-before:avoid;">Bodhidharma und die Wurzel des Chan</h2>
-<p>Chan (禅) wurde im 6. Jh. von Bodhidharma (Da Mo, 達摩) im Shaolin-Kloster etabliert. Er soll neun Jahre lang in einer Höhle meditiert haben — <em>bìguān</em> (壁觀), Wandmeditation. Danach entwickelte er das Yi Jin Jing für die körperlich geschwächten Mönche.</p>
+<p>Chan wurde im 6. Jh. von Bodhidharma (Da Mo) im Shaolin-Kloster etabliert. Er soll neun Jahre lang in einer Höhle meditiert haben — <em>bìguān</em>, Wandmeditation. Danach entwickelte er das Yi Jin Jing für die körperlich geschwächten Mönche.</p>
 <div class="qb">„Shaolin ist Chan. Die Bewegungen, Formen, Disziplin — alles ist ein Fahrzeug für das Verständnis des Selbst."<div class="au">— Shi Heng Yi</div></div>
 <h2 class="t2">Die Sitzhaltung — Sieben Punkte</h2>
 <div class="ib">{fig_zazen()}<div class="ic">Die anatomischen Korrekturpunkte der Chan-Sitzmeditation</div></div>
@@ -513,7 +606,7 @@ def teil2():
 <div style="display:flex;gap:8mm;align-items:flex-start;margin:4mm 0;">
 <div style="flex-shrink:0;">{fig_kinhin()}</div>
 <div style="flex:1;">
-<p style="font-size:10.5pt;">Kinhin (経行) folgt auf die Sitzmeditation und bringt die innere Stille in Bewegung.</p>
+<p style="font-size:10.5pt;">Kinhin folgt auf die Sitzmeditation und bringt die innere Stille in Bewegung.</p>
 <div class="kp"><p>Hände in Gassho (gefaltet) vor der Brust</p>
 <p>Schrittlänge: halbe Fußlänge</p>
 <p>Rechter Fuß beim Einatmen, linker beim Ausatmen</p>
@@ -521,7 +614,7 @@ def teil2():
 </div></div>
 <hr class="or">
 <h2 class="t2">Metta — Das Mitgefühl kultivieren</h2>
-<p style="text-align:center;font-size:9pt;color:#8B1A0E;font-style:italic;margin-bottom:4mm;">Cí Bēi Guān 慈悲觀 — Loving-Kindness Meditation</p>
+<p style="text-align:center;font-size:9pt;color:#8B1A0E;font-style:italic;margin-bottom:4mm;">Cí Bēi Guān — Loving-Kindness Meditation</p>
 <div class="pb"><div class="pt">Metta-Praxis — 15 Minuten täglich</div>
 <div class="sr"><span class="sn">1</span><div class="st"><strong>Sitzhaltung (2 Min.).</strong> Drei tiefe Atemzüge. Ankommen.</div></div>
 <div class="sr"><span class="sn">2</span><div class="st"><strong>Für dich selbst (4 Min.).</strong> <em>„Möge ich glücklich, gesund, in Frieden sein."</em></div></div>
@@ -532,17 +625,17 @@ def teil2():
 </div>'''
 
 def teil3():
-    return f'''{ch("Teil III","III","站樁","Zhan Zhuang","Stehen wie ein Pfahl. In äußerer Stille — maximale innere Arbeit.")}
+    return f'''{ch("Teil III","III","","Zhan Zhuang","Stehen wie ein Pfahl. In äußerer Stille — maximale innere Arbeit.")}
 <div class="content">
 <h2 class="t2" style="page-break-before:avoid;">Das Prinzip</h2>
-<p>Zhan Zhuang (站桩) verbindet seit 27 Jahrhunderten körperliche Kraft mit innerer Kultivierung. Von außen: nichts passiert. Von innen: der Geist spürt Spannungen auf, der Körper entwickelt elastische innere Kraft.</p>
+<p>Zhan Zhuang verbindet seit 27 Jahrhunderten körperliche Kraft mit innerer Kultivierung. Von außen: nichts passiert. Von innen: der Geist spürt Spannungen auf, der Körper entwickelt elastische innere Kraft.</p>
 <div class="qb">„In der Ruhe muss Dynamik sein. In der Bewegung muss Ruhe sein. Ruhe ist die Mutter aller Bewegungen."</div>
-<h2 class="t2">Song 松 — Das Loslassen</h2>
+<h2 class="t2">Song — Das Loslassen</h2>
 <div class="kp"><p><strong>Physisch:</strong> Muskeln hängen. Gelenke öffnen. Schwere sinkt in den Boden.</p>
 <p><strong>Atem:</strong> Lang, leise, durch die Nase. Dan Tian dehnt sich allseitig.</p>
 <p><strong>Mental:</strong> Shi Heng Yi: <em>„Let the drama out of your mind."</em></p></div>
 <h2 class="t2">Die fünf Kernhaltungen</h2>
-<div class="ht2">1. Wuji-Stand <span class="hc">無極樁</span></div>
+<div class="ht2">1. Wuji-Stand </div>
 <div style="display:flex;gap:7mm;align-items:flex-start;margin:3mm 0 6mm;">
 <div style="flex-shrink:0;">{fig_wuji()}</div>
 <div style="flex:1;">
@@ -553,7 +646,7 @@ def teil3():
 <p>Schultern locker. Augen halb geschlossen. Zunge am Gaumen</p></div>
 <p style="font-size:9pt;color:#8B1A0E;font-style:italic;">Dauer: 3–30 Minuten</p>
 </div></div>
-<div class="ht2">2. Den Baum halten <span class="hc">撑抱樁</span></div>
+<div class="ht2">2. Den Baum halten </div>
 <div style="display:flex;gap:7mm;align-items:flex-start;margin:3mm 0 6mm;">
 <div style="flex-shrink:0;">{fig_baum()}</div>
 <div style="flex:1;">
@@ -564,7 +657,7 @@ def teil3():
 <p style="font-size:10pt;font-style:italic;">Vorstellung: Ein Qi-Ball zwischen Händen und Brust.</p>
 <p style="font-size:9pt;color:#8B1A0E;font-style:italic;">Dauer: 5–20 Minuten</p>
 </div></div>
-<div class="ht2">3. Reiterhaltung <span class="hc">馬步 Mǎ Bù</span></div>
+<div class="ht2">3. Reiterhaltung <span class="hc"> Mǎ Bù</span></div>
 <div style="display:flex;gap:7mm;align-items:flex-start;margin:3mm 0 6mm;">
 <div style="flex-shrink:0;">{fig_mabu()}</div>
 <div style="flex:1;">
@@ -574,7 +667,7 @@ def teil3():
 <p>Steißbein senkrecht — kein Hohlkreuz</p></div>
 <p style="font-size:9pt;color:#8B1A0E;font-style:italic;">Dauer: 2–10 Minuten</p>
 </div></div>
-<div class="ht2">4. Hockender Affe <span class="hc">蹲猴式</span></div>
+<div class="ht2">4. Hockender Affe </div>
 <div style="display:flex;gap:7mm;align-items:flex-start;margin:3mm 0 6mm;">
 <div style="flex-shrink:0;">{fig_squat()}</div>
 <div style="flex:1;">
@@ -582,10 +675,10 @@ def teil3():
 <div class="qb" style="font-size:10pt;">"Brennen ist gut. Feuer transformiert den Körper."<div class="au">— Shi Heng Yi</div></div>
 <p style="font-size:9pt;color:#8B1A0E;font-style:italic;">Dauer: 5–15 Minuten (mit Zittern)</p>
 </div></div>
-<div class="ht2">5. Schlangenstand <span class="hc">蛇形樁</span></div>
+<div class="ht2">5. Schlangenstand </div>
 <p style="font-size:10.5pt;">Fortgeschrittene Haltung: leichte S-Form der Wirbelsäule, Hände auf Dan Tian. Erst nach 3–6 Monaten Basis üben.</p>
 <hr class="or">
-<h2 class="t2">Nei Gong — Die innere Arbeit 内功</h2>
+<h2 class="t2">Nei Gong — Die innere Arbeit</h2>
 <div class="row"><div class="col">
 <div class="cb"><div class="ct">1. Breathing &amp; Intention</div><p style="font-size:10pt;">Atem als Vehikel für Yi. Wo der Atem hingeht, folgt das Qi.</p></div>
 <div class="cb" style="margin-top:3mm;"><div class="ct">2. Attention &amp; Frequency</div><p style="font-size:10pt;">Wo Aufmerksamkeit ist, sammelt sich Qi.</p></div>
@@ -608,13 +701,13 @@ def teil3():
 
 def teil4():
     sub4 = "Jedes Mal wenn du einatmest, betritt Lebenskraft deinen Körper.<br><em>— Shi Heng Yi</em>"
-    return f'''{ch("Teil IV","IV","呼吸","Atemtechniken",sub4)}
+    return f'''{ch("Teil IV","IV","","Atemtechniken",sub4)}
 <div class="content">
 <h2 class="t2" style="page-break-before:avoid;">Die drei Säulen des Qi Gong</h2>
 <div class="row">
-<div class="col"><div class="cb"><div class="ct">1. Körper (调身)</div><p style="font-size:10pt;">Physische Struktur und Ausrichtung.</p></div>
-<div class="cb" style="margin-top:3mm;"><div class="ct">2. Atem (调息)</div><p style="font-size:10pt;">Tiefe, Dauer, Intensität, Volumen.</p></div></div>
-<div class="col"><div class="cb"><div class="ct">3. Intention (调心)</div><p style="font-size:10pt;">Yi: Wo die Aufmerksamkeit ist, fließt das Qi.</p></div>
+<div class="col"><div class="cb"><div class="ct">1. Körper</div><p style="font-size:10pt;">Physische Struktur und Ausrichtung.</p></div>
+<div class="cb" style="margin-top:3mm;"><div class="ct">2. Atem</div><p style="font-size:10pt;">Tiefe, Dauer, Intensität, Volumen.</p></div></div>
+<div class="col"><div class="cb"><div class="ct">3. Intention</div><p style="font-size:10pt;">Yi: Wo die Aufmerksamkeit ist, fließt das Qi.</p></div>
 <div class="qb" style="margin-top:3mm;font-size:10pt;">„Bewegung ist die Konsequenz von Qi. Qi folgt der Intention."<div class="au">— Shi Heng Yi</div></div></div>
 </div>
 <div class="ib">{fig_atem()}<div class="ic">Bauchatmung: Atem tief in den Dan Tian — Ausatmung immer länger als Einatmung</div></div>
@@ -622,17 +715,17 @@ def teil4():
 <table class="pl">
 <thead><tr><th>Stufe</th><th>Name</th><th>Beschreibung</th></tr></thead>
 <tbody>
-<tr><td>1</td><td>Lungenatmung (肺呼吸)</td><td>Brustatmung — flach, schnell. Häufigste Alltagsform.</td></tr>
+<tr><td>1</td><td>Lungenatmung</td><td>Brustatmung — flach, schnell. Häufigste Alltagsform.</td></tr>
 <tr><td>2</td><td>Bauchatmung / Dan Tian</td><td>Grundlage aller Qigong-Praxis.</td></tr>
 <tr><td>3</td><td>Umgekehrte Bauchatmung</td><td>Bauch zieht beim Einatmen EIN — Qi-Verdichtung.</td></tr>
-<tr><td>4</td><td>Fersenatmung (踵息)</td><td>Energie fließt bis in die Fersen (Zhuangzi).</td></tr>
-<tr><td>5</td><td>Porenatmung (毛孔呼吸)</td><td>Jede Pore atmet. Körper und Umgebung durchlässig.</td></tr>
-<tr><td>6</td><td>Embryonalatmung (胎息)</td><td>Kaum merklicher Atem. Vollständige Stille.</td></tr>
+<tr><td>4</td><td>Fersenatmung</td><td>Energie fließt bis in die Fersen (Zhuangzi).</td></tr>
+<tr><td>5</td><td>Porenatmung</td><td>Jede Pore atmet. Körper und Umgebung durchlässig.</td></tr>
+<tr><td>6</td><td>Embryonalatmung</td><td>Kaum merklicher Atem. Vollständige Stille.</td></tr>
 </tbody></table>
 <h2 class="t2">Sieben zentrale Atemübungen</h2>
 <h3 class="t3">1. Achtsame Atmung</h3>
 <div class="cb"><p style="font-size:10.5pt;">Wuji-Stand. Atemstrom beobachten ohne zu verändern. 9 Atemzüge. <em>„Beobachte ihn zuerst."</em> 5–10 Min. täglich als Einstieg.</p></div>
-<h3 class="t3">2. Tiefe Bauchatmung (腹式呼吸)</h3>
+<h3 class="t3">2. Tiefe Bauchatmung</h3>
 <div class="cb"><p style="font-size:10.5pt;">Einatmen: Bauch wölbt sich wie ein Ballon. Ausatmen: sanft einziehen. Verhältnis 4:6 bis 8:12 Sek. 5–15 Min. täglich.</p></div>
 <h3 class="t3">3. Umgekehrte Bauchatmung</h3>
 <div class="cb"><p style="font-size:10.5pt;">Beim Einatmen zieht der Bauch sich EIN. Qi-Verdichtung für innere Kraft. <span style="color:#8B1A0E;font-weight:bold;">Erst nach stabiler Bauchatmung. Nicht bei Bluthochdruck.</span></p></div>
@@ -650,15 +743,15 @@ def teil4():
 </div>'''
 
 def teil5():
-    return f'''{ch("Teil V","V","氣功","Shaolin Qigong","Ba Duan Jin · Yi Jin Jing · Shu Jing Gong")}
+    return f'''{ch("Teil V","V","","Shaolin Qigong","Ba Duan Jin · Yi Jin Jing · Shu Jing Gong")}
 <div class="content">
-<h2 class="t2" style="page-break-before:avoid;">Ba Duan Jin 八段錦 — Die Acht Brokate</h2>
+<h2 class="t2" style="page-break-before:avoid;">Ba Duan Jin — Die Acht Brokate</h2>
 <p style="text-align:center;font-size:9pt;color:#8B1A0E;font-style:italic;margin-bottom:4mm;">Song-Dynastie (960 n. Chr.) · „Schön wie kostbarer Brokatstoff"</p>
 <p>Shi Heng Yi: <em>„Bleibe in jeder Haltung. Mindestens 4 Atemzyklen. Halte die Kraft gleichmäßig."</em></p>
 <div style="display:flex;gap:8mm;align-items:flex-start;margin:4mm 0;">
 <div style="flex-shrink:0;">{fig_wei_tuo()}</div>
 <div style="flex:1;">
-<div class="ht2">Posture 1: Himmel stützen <span class="hc">托天式</span></div>
+<div class="ht2">Posture 1: Himmel stützen </div>
 <p style="font-size:10.5pt;">Finger verschränken, Hände über den Kopf, Handflächen nach oben. Fersen heben. <strong>Wirkung:</strong> San Jiao, Faszienketten, Lunge.</p>
 <div class="kp"><p>Einatmen beim Heben — Ausatmen beim Senken</p>
 <p>Rippen nicht nach vorne — aufrecht bleiben</p></div>
@@ -667,7 +760,7 @@ def teil5():
 <div style="display:flex;gap:8mm;align-items:flex-start;margin:4mm 0;">
 <div style="flex-shrink:0;">{fig_bogen()}</div>
 <div style="flex:1;">
-<div class="ht2">Posture 2: Den Bogen spannen <span class="hc">射雕式</span></div>
+<div class="ht2">Posture 2: Den Bogen spannen </div>
 <p style="font-size:10.5pt;">Reiterhaltung. Linker Zeigefinger oben (BaZi). Rechte Faust zieht den goldenen Bogen. <strong>Wirkung:</strong> Lungen- und Herzmeridian, Brustwirbelsäule.</p>
 <div class="kp"><p>Blick folgt dem Zeigefinger</p>
 <p>Rücken aufrecht — kein Einsinken</p></div>
@@ -676,38 +769,38 @@ def teil5():
 <table class="pl" style="margin-top:5mm;">
 <thead><tr><th>#</th><th>Name</th><th>Chinesisch</th><th>Hauptwirkung</th><th>Wdh.</th></tr></thead>
 <tbody>
-<tr><td>1</td><td>Himmel stützen</td><td>双手托天</td><td>San Jiao · Lunge</td><td>6×</td></tr>
-<tr><td>2</td><td>Bogen spannen</td><td>左右开弓</td><td>Herz- u. Lungenmeridian</td><td>3× je S.</td></tr>
-<tr><td>3</td><td>Himmel und Erde spalten</td><td>调理脾胃</td><td>Milz · Magen · Verdauung</td><td>6×</td></tr>
-<tr><td>4</td><td>Die weise Eule blickt zurück</td><td>五劳七伤</td><td>Nacken · Wirbelsäule · Du Mai</td><td>3× je S.</td></tr>
-<tr><td>5</td><td>Der Bär bewegt sich</td><td>摇头摆尾</td><td>Herzfeuer kühlen</td><td>6×</td></tr>
-<tr><td>6</td><td>Die Zehen berühren</td><td>两手攀足</td><td>Nieren · Lende · Ren Mai</td><td>6×</td></tr>
-<tr><td>7</td><td>Fäuste ballen, grimmig schauen</td><td>攒拳怒目</td><td>Leber · Muskelkraft</td><td>6×</td></tr>
-<tr><td>8</td><td>Siebenmaliges Wippen</td><td>背后七颠</td><td>Qi glätten · Nieren</td><td>7×</td></tr>
+<tr><td>1</td><td>Himmel stützen</td><td></td><td>San Jiao · Lunge</td><td>6×</td></tr>
+<tr><td>2</td><td>Bogen spannen</td><td></td><td>Herz- u. Lungenmeridian</td><td>3× je S.</td></tr>
+<tr><td>3</td><td>Himmel und Erde spalten</td><td></td><td>Milz · Magen · Verdauung</td><td>6×</td></tr>
+<tr><td>4</td><td>Die weise Eule blickt zurück</td><td></td><td>Nacken · Wirbelsäule · Du Mai</td><td>3× je S.</td></tr>
+<tr><td>5</td><td>Der Bär bewegt sich</td><td></td><td>Herzfeuer kühlen</td><td>6×</td></tr>
+<tr><td>6</td><td>Die Zehen berühren</td><td></td><td>Nieren · Lende · Ren Mai</td><td>6×</td></tr>
+<tr><td>7</td><td>Fäuste ballen, grimmig schauen</td><td></td><td>Leber · Muskelkraft</td><td>6×</td></tr>
+<tr><td>8</td><td>Siebenmaliges Wippen</td><td></td><td>Qi glätten · Nieren</td><td>7×</td></tr>
 </tbody></table>
 <hr class="or">
-<h2 class="t2">Yi Jin Jing 易筋經 — Muskel-Sehnen-Wandlung</h2>
+<h2 class="t2">Yi Jin Jing — Muskel-Sehnen-Wandlung</h2>
 <p>12 Übungen, stehend, Bodhidharma zugeschrieben. <em>„Du musst fühlen, welchen Teil des Körpers jede Übung beeinflusst."</em></p>
 <table class="pl">
 <thead><tr><th>#</th><th>Name</th><th>Chinesisch</th><th>Hauptwirkung</th></tr></thead>
 <tbody>
-<tr><td>1</td><td>Wei Tuo — Vorwärts</td><td>韦驮献杵一</td><td>Geist beruhigen, Atem regulieren</td></tr>
-<tr><td>2</td><td>Wei Tuo — Seitwärts</td><td>韦驮献杵二</td><td>Schultern, Qi-Zirkulation</td></tr>
-<tr><td>3</td><td>Wei Tuo — Aufwärts</td><td>韦驮献杵三</td><td>San Jiao öffnen</td></tr>
-<tr><td>4</td><td>Sterne pflücken</td><td>摘星换斗</td><td>Nieren und Mingmen</td></tr>
-<tr><td>5</td><td>Neun Ochsen ziehen</td><td>倒拽九牛尾</td><td>Herz- und Lungenmeridian</td></tr>
-<tr><td>6</td><td>Krallen zeigen</td><td>出爪亮翅</td><td>Lunge öffnen, Brustkorb weiten</td></tr>
-<tr><td>7</td><td>Reiterschwert</td><td>九鬼拔马刀</td><td>Yin-Meridiane, Herz-Niere</td></tr>
-<tr><td>8</td><td>Drei Teller</td><td>三盘落地</td><td>Nieren stärken</td></tr>
-<tr><td>9</td><td>Schwarzer Drache</td><td>青龙探爪</td><td>Leber, Schulterblatt</td></tr>
-<tr><td>10</td><td>Tiger springt auf Beute</td><td>卧虎扑食</td><td>Du Mai, Wirbelsäule</td></tr>
-<tr><td>11</td><td>Verbeugend grüßen</td><td>打躬势</td><td>Gehirn durchbluten</td></tr>
-<tr><td>12</td><td>Den Schwanz schwingen</td><td>掉尾势</td><td>Integration · alle Meridiane</td></tr>
+<tr><td>1</td><td>Wei Tuo — Vorwärts</td><td></td><td>Geist beruhigen, Atem regulieren</td></tr>
+<tr><td>2</td><td>Wei Tuo — Seitwärts</td><td></td><td>Schultern, Qi-Zirkulation</td></tr>
+<tr><td>3</td><td>Wei Tuo — Aufwärts</td><td></td><td>San Jiao öffnen</td></tr>
+<tr><td>4</td><td>Sterne pflücken</td><td></td><td>Nieren und Mingmen</td></tr>
+<tr><td>5</td><td>Neun Ochsen ziehen</td><td></td><td>Herz- und Lungenmeridian</td></tr>
+<tr><td>6</td><td>Krallen zeigen</td><td></td><td>Lunge öffnen, Brustkorb weiten</td></tr>
+<tr><td>7</td><td>Reiterschwert</td><td></td><td>Yin-Meridiane, Herz-Niere</td></tr>
+<tr><td>8</td><td>Drei Teller</td><td></td><td>Nieren stärken</td></tr>
+<tr><td>9</td><td>Schwarzer Drache</td><td></td><td>Leber, Schulterblatt</td></tr>
+<tr><td>10</td><td>Tiger springt auf Beute</td><td></td><td>Du Mai, Wirbelsäule</td></tr>
+<tr><td>11</td><td>Verbeugend grüßen</td><td></td><td>Gehirn durchbluten</td></tr>
+<tr><td>12</td><td>Den Schwanz schwingen</td><td></td><td>Integration · alle Meridiane</td></tr>
 </tbody></table>
 <div class="cb" style="margin-top:4mm;"><div class="ct">Stufenweise Wirkungen</div>
 <p style="font-size:10pt;">Jahr 1: Vitalität · Jahr 2: Blutzirkulation · Jahr 3: Sehnen elastisch · Jahr 4: Meridiane · Jahr 5: Knochenmark</p></div>
 <hr class="or">
-<h2 class="t2">Shu Jing Gong 舒筋功</h2>
+<h2 class="t2">Shu Jing Gong </h2>
 <p style="text-align:center;font-size:9pt;color:#8B1A0E;font-style:italic;">„Smooth Relaxation Practice" · Shaolin Temple Europe · 10 Sektionen mit Mantra</p>
 <p>Shi Heng Yi: <em>„Reguliert zuerst den Körper, dann die Atmung, dann die Emotionen, dann das Qi und schließlich den Geist."</em></p>
 <table class="pl">
@@ -727,8 +820,108 @@ def teil5():
 </tbody></table>
 </div>'''
 
+def kernuebungen():
+    return f'''{ch("Teil VI","VI","Si Gen Gong","Die vier Kernübungen","Dein täglicher Weg — vier Praktiken, die alles tragen.")}
+<div class="content">
+<p class="intro">Dies sind die vier Übungen, die der Kern deiner täglichen Praxis sind. Jede wirkt auf eine andere Schicht: <strong>Faust</strong> sammelt Willen und Leber-Qi. <strong>Reiter</strong> wurzelt dich und entfacht Mingmen, das Lebenstor. <strong>L-Stand</strong> entlastet Wirbelsäule und Nacken, lässt Spannung in die Erde fallen. <strong>Seitenarme</strong> öffnen den Schultergürtel und Herz-Lungenraum.</p>
+<div class="qb">„Mentale Stärke benötigt eine sichtbare Form. Nutze deinen Körper, um zum Geist zu gelangen."<div class="au">— Shi Heng Yi</div></div>
+<hr class="or">
+
+<h2 class="t2">Übung 1 — Faust ballen &amp; halten</h2>
+<p style="text-align:center;font-size:9pt;color:#8B1A0E;font-style:italic;margin-bottom:4mm;">Wo Quan — Faust-Kultivierung · Woche 1: 4 Min. · ab Woche 3: 6 Min.</p>
+<div style="display:flex;gap:8mm;align-items:flex-start;margin:4mm 0;">
+<div style="flex-shrink:0;">{fig_fist()}</div>
+<div style="flex:1;">
+<div class="cb"><div class="ct">Wirkung</div>
+<p style="font-size:10pt;">Die Faust ist im Daoyin die Wurzel des Leber-Qi. Festes Ballen sammelt zerstreute Energie, baut isometrische Unterarm- und Schulterkraft auf und beruhigt nervöse Unruhe. Klassisches achtes Brokat-Stück.</p></div>
+<div class="pb" style="margin-top:3mm;"><div class="pt">Anleitung</div>
+<div class="sr"><span class="sn">1</span><div class="st"><strong>Stand.</strong> Füße schulterbreit, parallel. Knie minimal weich. Becken neutral. Baihui zieht zum Himmel.</div></div>
+<div class="sr"><span class="sn">2</span><div class="st"><strong>Faust formen.</strong> Daumen liegt außen über Zeige- und Mittelfinger. Knöchel ausgerichtet. Spannung ca. 70 %.</div></div>
+<div class="sr"><span class="sn">3</span><div class="st"><strong>Position.</strong> Beide Fäuste hängen seitlich neben den Oberschenkeln, leicht vor dem Körper. Schultern bleiben tief.</div></div>
+<div class="sr"><span class="sn">4</span><div class="st"><strong>Halten.</strong> 4 Minuten (Woche 1) statisch. Atem fließt ruhig in den Dan Tian. Kiefer locker, Zunge am Gaumen.</div></div>
+<div class="sr"><span class="sn">5</span><div class="st"><strong>Lösen.</strong> Fäuste öffnen. Arme langsam zur Seite hängen lassen. Finger spreizen. Spüre das Strömen.</div></div>
+<div class="sr"><span class="sn">6</span><div class="st"><strong>Nachspüren.</strong> 30 Sekunden still. Wärme in den Händen. Pulsieren der Unterarme.</div></div>
+</div>
+</div></div>
+<div class="row">
+<div class="col"><div class="hb"><div class="ht">Häufige Fehler</div>
+<p style="font-size:10pt;margin-top:1.5mm;">Schultern hochziehen · Atem anhalten · Gesicht verspannen · Knie durchdrücken.</p></div></div>
+<div class="col"><div class="hb"><div class="ht">Fortschritt</div>
+<p style="font-size:10pt;margin-top:1.5mm;">W1: 4 Min. · W2: 5 Min. · W3+: 6 Min. Erst Dauer, dann Spannungstiefe steigern.</p></div></div>
+</div>
+
+<h2 class="t2">Übung 2 — Ma Bu (Reiterhaltung)</h2>
+<p style="text-align:center;font-size:9pt;color:#8B1A0E;font-style:italic;margin-bottom:4mm;">Ma Bu Zhuang — Die Mutter aller Stände · Woche 1: 2 Min. · ab Woche 4: 5 Min.</p>
+<div style="display:flex;gap:8mm;align-items:flex-start;margin:4mm 0;">
+<div style="flex-shrink:0;">{fig_mabu()}</div>
+<div style="flex:1;">
+<div class="cb"><div class="ct">Wirkung</div>
+<p style="font-size:10pt;">Ma Bu ist die ursprüngliche Kraftübung der Shaolin. Sie wurzelt das Becken, aktiviert Mingmen (Lebenstor), kräftigt Quadrizeps und Gluteen, dehnt die hintere Kette und schult Willenskraft wie kaum eine andere Haltung. Shi Heng Yi: <em>„Das ist Willenskraft sichtbar gemacht."</em></p></div>
+<div class="pb" style="margin-top:3mm;"><div class="pt">Anleitung</div>
+<div class="sr"><span class="sn">1</span><div class="st"><strong>Schritt.</strong> Zwei Schulterbreiten zur Seite. Füße zeigen geradeaus oder leicht nach außen.</div></div>
+<div class="sr"><span class="sn">2</span><div class="st"><strong>Absenken.</strong> Wie auf einen Pferderücken setzen. Oberschenkel parallel zum Boden — anfangs so tief wie möglich.</div></div>
+<div class="sr"><span class="sn">3</span><div class="st"><strong>Knie.</strong> Bleiben über den Fußspitzen — niemals einwärts kippen. Druck gleichmäßig auf beide Füße.</div></div>
+<div class="sr"><span class="sn">4</span><div class="st"><strong>Becken.</strong> Steißbein senkrecht. Kein Hohlkreuz. Bauchnabel sanft zum Mingmen ziehen.</div></div>
+<div class="sr"><span class="sn">5</span><div class="st"><strong>Oberkörper.</strong> Aufrecht wie eine Säule. Schultern fallen. Arme: Fäuste an die Hüften oder ausgestreckt vor der Brust.</div></div>
+<div class="sr"><span class="sn">6</span><div class="st"><strong>Halten.</strong> 2 Min. (W1). Atmen, nicht anhalten. Zittern ist Fortschritt — nicht dagegen kämpfen.</div></div>
+</div>
+</div></div>
+<div class="qb">„In der Ruhe muss Dynamik sein. In der Bewegung muss Ruhe sein."<div class="au">— Shaolin-Spruch</div></div>
+
+<h2 class="t2">Übung 3 — L-Stand mit Ausschütteln</h2>
+<p style="text-align:center;font-size:9pt;color:#8B1A0E;font-style:italic;margin-bottom:4mm;">Yao Bai Gong — Wirbelsäulen-Entlastung · Alle Wochen: 3 Min.</p>
+<div style="display:flex;gap:8mm;align-items:flex-start;margin:4mm 0;">
+<div style="flex-shrink:0;">{fig_lbend()}</div>
+<div style="flex:1;">
+<div class="cb"><div class="ct">Wirkung</div>
+<p style="font-size:10pt;">Der L-Stand löst Spannung aus dem Schulter-Nacken-Bereich, dehnt die hintere Faszienkette, durchblutet den Kopf, beruhigt das Nervensystem und lässt Tagesstress aus den Händen tropfen. Das Ausschütteln aktiviert die Lymphe und gibt überschüssiges Yang ab.</p></div>
+<div class="pb" style="margin-top:3mm;"><div class="pt">Anleitung</div>
+<div class="sr"><span class="sn">1</span><div class="st"><strong>Stand.</strong> Füße hüftbreit, Knie minimal weich. Hände an die Hüften.</div></div>
+<div class="sr"><span class="sn">2</span><div class="st"><strong>Beugen.</strong> Aus der Hüfte (nicht aus dem Rücken!) nach vorne klappen — bis der Oberkörper im 90°-Winkel zur waagerechten Linie steht. Rücken lang, nicht rund.</div></div>
+<div class="sr"><span class="sn">3</span><div class="st"><strong>Arme hängen.</strong> Schultern lösen sich, die Arme fallen schwer nach unten. Nicht aktiv halten.</div></div>
+<div class="sr"><span class="sn">4</span><div class="st"><strong>Ausschütteln.</strong> Sanftes lockeres Schütteln der Hände, dann der Unterarme, dann der ganzen Arme. Wie Tropfen abschleudern.</div></div>
+<div class="sr"><span class="sn">5</span><div class="st"><strong>Kopf.</strong> Nacken vollständig hängen lassen — Kopf wird schwer.</div></div>
+<div class="sr"><span class="sn">6</span><div class="st"><strong>Atem.</strong> Lang ausatmen mit „Haaa" (Stresston). 3 Minuten so verweilen.</div></div>
+<div class="sr"><span class="sn">7</span><div class="st"><strong>Aufrichten.</strong> Wirbel für Wirbel, ganz langsam — Kopf zuletzt.</div></div>
+</div>
+</div></div>
+<div class="hb"><div class="ht">Sicherheitshinweis</div>
+<p style="font-size:10pt;margin-top:1.5mm;">Bei Bandscheibenproblemen oder Bluthochdruck weniger tief beugen (45° statt 90°). Aufrichten immer langsam — sonst Schwindel.</p></div>
+
+<h2 class="t2">Übung 4 — Seitenarme &amp; Mittelfinger ziehen</h2>
+<p style="text-align:center;font-size:9pt;color:#8B1A0E;font-style:italic;margin-bottom:4mm;">Zhang Bi Gong — Armspann · Alle Wochen: 3 Min.</p>
+<div style="display:flex;gap:8mm;align-items:flex-start;margin:4mm 0;">
+<div style="flex-shrink:0;">{fig_sidearms()}</div>
+<div style="flex:1;">
+<div class="cb"><div class="ct">Wirkung</div>
+<p style="font-size:10pt;">Das Ziehen der Mittelfinger nach außen längt die Armmeridiane (vor allem Herzbeutel und Drei-Erwärmer), öffnet den Brustraum, dehnt die Achseln und lehrt den feinen Unterschied zwischen <em>Spannung halten</em> und <em>Schultern entspannen</em>. Klassisches Yi-Jin-Jing-Prinzip: Yi (Vorstellung) erzeugt Zug, Schultern bleiben weich.</p></div>
+<div class="pb" style="margin-top:3mm;"><div class="pt">Anleitung</div>
+<div class="sr"><span class="sn">1</span><div class="st"><strong>Stand.</strong> Natürlicher Stand: Füße hüftbreit, Knie minimal weich, Becken neutral. Baihui zieht nach oben.</div></div>
+<div class="sr"><span class="sn">2</span><div class="st"><strong>Arme heben.</strong> Beide Arme zur Seite ausstrecken, parallel zum Boden, Handflächen nach unten.</div></div>
+<div class="sr"><span class="sn">3</span><div class="st"><strong>Finger spreizen.</strong> Hände weit öffnen. Mittelfinger zeigen genau zur Seite.</div></div>
+<div class="sr"><span class="sn">4</span><div class="st"><strong>Yi — Vorstellung.</strong> Stelle dir vor, ein feiner Faden zieht beide Mittelfinger gleichzeitig nach außen weg. Die Arme werden länger und länger.</div></div>
+<div class="sr"><span class="sn">5</span><div class="st"><strong>Paradoxon.</strong> Während die Finger nach außen ziehen, <em>sinken</em> die Schultern. Nacken wird länger. Kiefer bleibt weich.</div></div>
+<div class="sr"><span class="sn">6</span><div class="st"><strong>Atem.</strong> Ruhig in den Dan Tian. Beim Ausatmen: noch mehr Sinken der Schultern, noch mehr Ziehen der Mittelfinger.</div></div>
+<div class="sr"><span class="sn">7</span><div class="st"><strong>Halten.</strong> 3 Minuten. Brennen in den Deltoiden ist erwünscht.</div></div>
+<div class="sr"><span class="sn">8</span><div class="st"><strong>Lösen.</strong> Arme über die Seite sinken lassen — sehr langsam, mit dem Ausatem.</div></div>
+</div>
+</div></div>
+<div class="qb">„Wo deine Aufmerksamkeit fließt, dorthin fließt auch deine Energie. Lass die Finger ziehen — die Schultern werden frei."<div class="au">— Daoyin-Tradition</div></div>
+
+<hr class="or">
+
+<h2 class="t2">Verbindung der vier — Sequenz und Übergänge</h2>
+<div class="kp">
+<p><strong>Reihenfolge:</strong> 1 → 2 → 3 → 4 — Aufbauend. Erst Hände/Wille (1), dann Beine/Wurzel (2), dann Wirbelsäule lösen (3), zum Schluss öffnen (4).</p>
+<p><strong>Zwischen den Übungen:</strong> 30 Sekunden Wuji-Stand. Atem zentrieren. Spüren, was die letzte Übung hinterlassen hat.</p>
+<p><strong>Atem ist Konstante:</strong> Niemals halten — selbst im Brennen weiter atmen. Ein-Aus 4:6 bis 6:8 Sekunden.</p>
+<p><strong>Yi vor Kraft:</strong> Zuerst die Vorstellung. Dann die Bewegung. Dann der Atem. So entsteht inneres Qi-Gong.</p>
+</div>
+</div>'''
+
+
 def trainingsplan():
-    return f'''{ch("Dein Weg","","修煉計劃","San Xiu Trainingsplan","Wochenweise Progression · 13 Übungen · 6 Wochen · 19–49 Min. täglich")}
+    return f'''{ch("Dein Weg","","","San Xiu Trainingsplan","Wochenweise Progression · 13 Übungen · 6 Wochen · 19–49 Min. täglich")}
 <div class="content">
 <h2 class="t2" style="page-break-before:avoid;">Tagesstruktur</h2>
 <div class="pb"><div class="pt">Die vollständige tägliche Einheit</div>
@@ -740,6 +933,7 @@ def trainingsplan():
 <div class="sr"><span class="sn">6</span><div class="st"><strong>Schulter &amp; Qi (ab Woche 6).</strong> Diao Bang, Yang Dan Qi.</div></div>
 <div class="sr"><span class="sn">7</span><div class="st"><strong>Nachspüren (2 Min.).</strong> Körper lockern. 60 Sek. still. Hände auf Dan Tian.</div></div>
 </div>
+<div class="ib">{fig_progression()}<div class="ic">Tägliche Übungsdauer pro Woche — sanfte Steigerung von 19 auf 49 Minuten</div></div>
 <h2 class="t2">Die 13 Übungen — 6 Wochen Progression</h2>
 <table class="pl">
 <thead><tr><th>#</th><th>Übung</th><th>W1</th><th>W2</th><th>W3</th><th>W4</th><th>W5</th><th>W6</th></tr></thead>
@@ -786,7 +980,7 @@ def trainingsplan():
 
 def zitate():
     def z(t,s): return f'<div class="zi"><div class="zt">„{t}"</div><div class="zs">— {s}</div></div>'
-    return f'''{ch("Anhang I","","語錄","Meister Shi Heng Yi","Ausgewählte Lehren zur täglichen Begleitung")}
+    return f'''{ch("Anhang I","","","Meister Shi Heng Yi","Ausgewählte Lehren zur täglichen Begleitung")}
 <div class="content">
 <h2 class="t2" style="page-break-before:avoid;">Über Selbstmeisterschaft</h2>
 {z("Es gibt zwei Fehler auf dem Weg zur Selbstmeisterschaft: Nicht damit anzufangen. Und nicht den ganzen Weg zu gehen.","Shi Heng Yi")}
@@ -814,36 +1008,35 @@ def zitate():
 
 def glossar():
     def g(t,c,d): return f'<div class="gi"><span class="gt">{t}</span><span class="gc">{c}</span><div class="gd">{d}</div></div>'
-    return f'''{ch("Anhang II","","詞彙","Glossar","Chinesische Begriffe und ihre Bedeutungen")}
+    return f'''{ch("Anhang II","","","Glossar","Chinesische Begriffe und ihre Bedeutungen")}
 <div class="content">
 <h2 class="t2" style="page-break-before:avoid;">Grundbegriffe</h2>
-{g("Qi","氣","Lebensenergie. Fließt durch Meridiane. Folgt der Intention. Wird durch Qigong kultiviert.")}
-{g("Jing","精","Essenz. Die dichteste Lebensenergie — in den Nieren gespeichert.")}
-{g("Shen","神","Geist, Bewusstsein. Das Subtilste der drei Schätze. Residiert im Herzen.")}
-{g("Yi","意","Intention. Formel: Yi → Qi → Bewegung. Wo die Aufmerksamkeit ist, fließt das Qi.")}
-{g("Dan Tian","丹田","Energiezentrum. 3 Fingerbreit unter dem Nabel. Primäres Zentrum der Qigong-Praxis.")}
-{g("Song","松","Durchlässigkeit, Loslassen. Aktives Lösen von Spannung. Grundprinzip des Zhan Zhuang.")}
-{g("Chan","禪","Zen. Meditationstradition, die Bodhidharma im Shaolin-Kloster begründete.")}
-{g("Wu De","武德","Kriegerische Tugend. Die 14 ethischen Grundsätze der Shaolin-Praxis.")}
+{g("Qi","","Lebensenergie. Fließt durch Meridiane. Folgt der Intention. Wird durch Qigong kultiviert.")}
+{g("Jing","","Essenz. Die dichteste Lebensenergie — in den Nieren gespeichert.")}
+{g("Shen","","Geist, Bewusstsein. Das Subtilste der drei Schätze. Residiert im Herzen.")}
+{g("Yi","","Intention. Formel: Yi → Qi → Bewegung. Wo die Aufmerksamkeit ist, fließt das Qi.")}
+{g("Dan Tian","","Energiezentrum. 3 Fingerbreit unter dem Nabel. Primäres Zentrum der Qigong-Praxis.")}
+{g("Song","","Durchlässigkeit, Loslassen. Aktives Lösen von Spannung. Grundprinzip des Zhan Zhuang.")}
+{g("Chan","","Zen. Meditationstradition, die Bodhidharma im Shaolin-Kloster begründete.")}
+{g("Wu De","","Kriegerische Tugend. Die 14 ethischen Grundsätze der Shaolin-Praxis.")}
 <h2 class="t2" style="margin-top:5mm;">Übungsbegriffe</h2>
-{g("Zhan Zhuang","站桩","Stehende Pfahlarbeit. Statische Stehübung zur Entwicklung innerer Kraft. Über 27 Jahrhunderte alt.")}
-{g("Ba Duan Jin","八段锦","Acht-Brokate-Qigong. 8 Haupthaltungen. Seit der Song-Dynastie (960 n. Chr.) belegt.")}
-{g("Yi Jin Jing","易筋经","Muskel-Sehnen-Wandlungsklassiker. 12 Übungen, Bodhidharma zugeschrieben.")}
-{g("Shu Jing Gong","舒筋功","Buddhistische Qigong-Form des Shaolin Temple Europe. 10 Sektionen mit Mantra.")}
-{g("Ma Bu","马步","Reiterhaltung. Breiter, tiefer Stand. Grundlegende Kraftübung.")}
-{g("Wuji","无极","Leere vor dem Beginn. Der neutrale Grundstand, aus dem alle Formen entstehen.")}
-{g("Baihui","百会","Scheitelakupunkturpunkt (GV20). Verbindung mit dem Yang des Himmels.")}
-{g("Yongquan","涌泉","Sprudelnde Quelle (KD1). Im vorderen Fußdrittel. Erdungspunkt im Zhan Zhuang.")}
-{g("Nei Gong","内功","Innere Arbeit. Bewusste Lenkung von Yi und Qi durch den Körper.")}
-{g("Kinhin","経行","Gehmeditation der Chan/Zen-Tradition. Bringt innere Stille in Bewegung.")}
-{g("San Xiu","三修","Der dreifache Weg. Gleichzeitige Kultivierung von Körper, Atem und Geist.")}
+{g("Zhan Zhuang","","Stehende Pfahlarbeit. Statische Stehübung zur Entwicklung innerer Kraft. Über 27 Jahrhunderte alt.")}
+{g("Ba Duan Jin","","Acht-Brokate-Qigong. 8 Haupthaltungen. Seit der Song-Dynastie (960 n. Chr.) belegt.")}
+{g("Yi Jin Jing","","Muskel-Sehnen-Wandlungsklassiker. 12 Übungen, Bodhidharma zugeschrieben.")}
+{g("Shu Jing Gong","","Buddhistische Qigong-Form des Shaolin Temple Europe. 10 Sektionen mit Mantra.")}
+{g("Ma Bu","","Reiterhaltung. Breiter, tiefer Stand. Grundlegende Kraftübung.")}
+{g("Wuji","","Leere vor dem Beginn. Der neutrale Grundstand, aus dem alle Formen entstehen.")}
+{g("Baihui","","Scheitelakupunkturpunkt (GV20). Verbindung mit dem Yang des Himmels.")}
+{g("Yongquan","","Sprudelnde Quelle (KD1). Im vorderen Fußdrittel. Erdungspunkt im Zhan Zhuang.")}
+{g("Nei Gong","","Innere Arbeit. Bewusste Lenkung von Yi und Qi durch den Körper.")}
+{g("Kinhin","","Gehmeditation der Chan/Zen-Tradition. Bringt innere Stille in Bewegung.")}
+{g("San Xiu","","Der dreifache Weg. Gleichzeitige Kultivierung von Körper, Atem und Geist.")}
 <hr class="or">
 <p style="text-align:center;font-size:9pt;color:#8B1A0E;font-style:italic;margin-top:5mm;line-height:1.9;">
 Dieses Buch ist ein persönliches Werkzeug für die tägliche Praxis.<br>
 Kein Buch kann die direkte Erfahrung ersetzen.<br>
 Beginne. Bleibe dran. Gehe den ganzen Weg.
 </p>
-<p style="text-align:center;font-size:18pt;color:#8B1A0E;margin-top:6mm;font-family:'Noto Serif CJK SC',serif;">三修</p>
 </div>'''
 
 # ─── RENDERER ───────────────────────────────────────────────────────────────
@@ -865,7 +1058,7 @@ if __name__ == '__main__':
         ('A', [cover(), titelblatt(), toc(), einleitung(), teil1()]),
         ('B', [teil2(), teil3()]),
         ('C', [teil4(), teil5()]),
-        ('D', [trainingsplan(), zitate(), glossar()]),
+        ('D', [kernuebungen(), trainingsplan(), zitate(), glossar()]),
     ]
 
     pdfs = []
