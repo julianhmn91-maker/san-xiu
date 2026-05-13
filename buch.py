@@ -515,7 +515,7 @@ def fig_zazen(annotate=True, cover=False):
         b += f'<circle cx="{cx}" cy="180" r="62" fill="none" stroke="{lcol}" stroke-width="0.6" opacity="0.18"/>'
         return _svg(400, 400, b)
 
-    cx = 140
+    cx = 190
     b = f'<ellipse cx="{cx}" cy="266" rx="92" ry="9" fill="{INK}" opacity="0.08"/>'
     b += f'<path d="M{cx-90},256 Q{cx-70},220 {cx-30},210 Q{cx},204 {cx+30},210 Q{cx+70},220 {cx+90},256 Z" fill="{ROBE}" stroke="{INK}" stroke-width="2"/>'
     b += f'<path d="M{cx-50},226 Q{cx},218 {cx+50},226" fill="none" stroke="{ROBE2}" stroke-width="1.4"/>'
@@ -529,19 +529,23 @@ def fig_zazen(annotate=True, cover=False):
     b += _arm(cx+36, 156, cx+46, 178, cx+22, 195, side='r')
     b += _neck(cx, 142, 7, 8); b += _head(cx, 124, 16, 'meditative')
     if annotate:
-        pts = [(34, 124, "1", "Baihui"), (246, 124, "2", "Augen halb"),
-               (28, 162, "3", "Schultern"), (252, 162, "4", "Wirbelsäule"),
-               (cx, 195, "5", "Mudra"), (cx, 256, "6", "Lotus")]
-        for x, y, n, lbl in pts:
+        # Linke Beschriftungspunkte (am Körper) + Labels weiter links außerhalb
+        pts_l = [(cx-44, 124, "1", "Baihui"), (cx-58, 162, "3", "Schultern"), (cx-72, 195, "5", "Mudra"), (cx-44, 256, "Lotus-Sitz", None)]
+        # Rechte Punkte
+        pts_r = [(cx+44, 124, "2", "Augen halb"), (cx+58, 162, "4", "Wirbelsäule")]
+        for x, y, n, lbl in pts_l[:3]:
             b += f'<circle cx="{x}" cy="{y}" r="9" fill="{RED}"/>'
             b += f'<text x="{x}" y="{y+3}" text-anchor="middle" font-size="8pt" fill="white" font-family="Georgia,serif" font-weight="bold">{n}</text>'
-            if x < 140:
-                b += _label(x-12, y+2, lbl, "end", 7.5)
-            elif x > 140:
-                b += _label(x+12, y+2, lbl, "start", 7.5)
-            else:
-                b += _label(x, y+24 if n=="5" else y+22, lbl, "middle", 7.5)
-    return _svg(290, 280, b)
+            b += _label(x-14, y+3, lbl, "end", 8)
+        for x, y, n, lbl in pts_r:
+            b += f'<circle cx="{x}" cy="{y}" r="9" fill="{RED}"/>'
+            b += f'<text x="{x}" y="{y+3}" text-anchor="middle" font-size="8pt" fill="white" font-family="Georgia,serif" font-weight="bold">{n}</text>'
+            b += _label(x+14, y+3, lbl, "start", 8)
+        # 6 Lotus rechts neben der Sitzfläche
+        b += f'<circle cx="{cx+82}" cy="240" r="9" fill="{RED}"/>'
+        b += f'<text x="{cx+82}" y="243" text-anchor="middle" font-size="8pt" fill="white" font-family="Georgia,serif" font-weight="bold">6</text>'
+        b += _label(cx+96, 243, "Lotus-Sitz", "start", 8)
+    return _svg(380, 290, b)
 
 def fig_kinhin():
     """Kinhin — Gehmeditation, halbprofil."""
@@ -694,6 +698,163 @@ def fig_sidearms_pose():
     b += _label(cx+170, 70, "Mittelfinger zieht", "middle", 7)
     b += _label(cx, 116, "Schultern fallen", "middle", 7)
     return _svg(380, 310, b)
+
+# ───── Zusätzliche Kernübungen 5–8 ──────────────────────────────────────────
+
+def fig_hang():
+    """Hängen an einer Stange."""
+    cx = 130
+    # Stange oben
+    b = f'<line x1="{cx-90}" y1="40" x2="{cx+90}" y2="40" stroke="{INK}" stroke-width="4"/>'
+    b += f'<line x1="{cx-90}" y1="40" x2="{cx+90}" y2="40" stroke="{GOLD}" stroke-width="2"/>'
+    b += f'<rect x="{cx-94}" y="32" width="8" height="16" fill="{INK}"/>'
+    b += f'<rect x="{cx+86}" y="32" width="8" height="16" fill="{INK}"/>'
+    # Arme hängend von Stange
+    b += f'<line x1="{cx-22}" y1="48" x2="{cx-28}" y2="120" stroke="{ROBE}" stroke-width="10" stroke-linecap="round"/>'
+    b += f'<line x1="{cx-22}" y1="48" x2="{cx-28}" y2="120" stroke="{INK}" stroke-width="1.6"/>'
+    b += f'<line x1="{cx+22}" y1="48" x2="{cx+28}" y2="120" stroke="{ROBE}" stroke-width="10" stroke-linecap="round"/>'
+    b += f'<line x1="{cx+22}" y1="48" x2="{cx+28}" y2="120" stroke="{INK}" stroke-width="1.6"/>'
+    # Hände greifen Stange
+    b += f'<path d="M{cx-32},34 Q{cx-22},32 {cx-12},38 Q{cx-14},50 {cx-26},52 Q{cx-34},48 {cx-32},34 Z" fill="{SK}" stroke="{INK}" stroke-width="1.5"/>'
+    b += f'<path d="M{cx+12},38 Q{cx+22},32 {cx+32},34 Q{cx+34},48 {cx+26},52 Q{cx+14},50 {cx+12},38 Z" fill="{SK}" stroke="{INK}" stroke-width="1.5"/>'
+    # Torso hängt
+    b += f'<path d="M{cx-30},120 L{cx-26},192 L{cx+26},192 L{cx+30},120 Z" fill="{ROBE}" stroke="{INK}" stroke-width="2"/>'
+    b += f'<line x1="{cx-14}" y1="124" x2="{cx-12}" y2="188" stroke="{INK}" stroke-width="0.7" opacity="0.35"/>'
+    b += f'<line x1="{cx+14}" y1="124" x2="{cx+12}" y2="188" stroke="{INK}" stroke-width="0.7" opacity="0.35"/>'
+    # Beine hängen
+    b += _leg(cx-14, 192, cx-14, 240, cx-14, 290, thick=12)
+    b += _leg(cx+14, 192, cx+14, 240, cx+14, 290, thick=12)
+    # Kopf
+    b += _neck(cx, 108, 7, 12); b += _head(cx, 90, 13, 'meditative')
+    # Dehnungs-Indikator
+    b += _arrow(cx-50, 200, cx-50, 270, RED, 1.4)
+    b += _label(cx-58, 240, "Wirbel ziehen", "end", 7)
+    b += _arrow(cx+50, 130, cx+50, 70, GOLD, 1.4)
+    b += _label(cx+58, 110, "Schultern", "start", 7)
+    b += _label(cx+58, 122, "öffnen", "start", 7)
+    return _svg(280, 308, b)
+
+
+def fig_pushup():
+    """Liegestütz auf Fäusten."""
+    # Seitenansicht. Boden bei y=240
+    b = f'<line x1="20" y1="240" x2="380" y2="240" stroke="{GOLD}" stroke-width="1.6"/>'
+    # Körper diagonal: Kopf vorne unten (links), Füße hinten oben rechts
+    # Fußspitzen am Boden
+    b += f'<ellipse cx="340" cy="240" rx="12" ry="4" fill="{INK}" opacity="0.85"/>'
+    b += f'<ellipse cx="330" cy="238" rx="12" ry="4" fill="{INK}" opacity="0.85"/>'
+    # Beine gestreckt (von Fuß zu Hüfte ansteigend leicht)
+    b += f'<line x1="334" y1="234" x2="230" y2="172" stroke="{ROBE}" stroke-width="16" stroke-linecap="round"/>'
+    b += f'<line x1="334" y1="234" x2="230" y2="172" stroke="{INK}" stroke-width="1.8"/>'
+    # Hüfte
+    b += f'<circle cx="230" cy="172" r="4" fill="{INK}" opacity="0.7"/>'
+    # Torso (Hüfte zu Schulter)
+    b += f'<path d="M218,170 L168,164 L172,154 L222,160 Z" fill="{ROBE}" stroke="{INK}" stroke-width="2"/>'
+    # Längerer flacher Torso als Plank
+    b += f'<line x1="222" y1="160" x2="148" y2="158" stroke="{ROBE}" stroke-width="44" stroke-linecap="round"/>'
+    b += f'<line x1="222" y1="160" x2="148" y2="158" stroke="{INK}" stroke-width="1.8" fill="none"/>'
+    # Kragen / Kragenende
+    b += f'<path d="M138,142 L130,156 L130,164 L142,170 Z" fill="{SK}" stroke="{INK}" stroke-width="1.4"/>'
+    # Arme senkrecht runter
+    b += f'<line x1="148" y1="170" x2="142" y2="220" stroke="{ROBE}" stroke-width="11" stroke-linecap="round"/>'
+    b += f'<line x1="148" y1="170" x2="142" y2="220" stroke="{INK}" stroke-width="1.6"/>'
+    b += f'<line x1="160" y1="172" x2="158" y2="220" stroke="{ROBE}" stroke-width="11" stroke-linecap="round"/>'
+    b += f'<line x1="160" y1="172" x2="158" y2="220" stroke="{INK}" stroke-width="1.6"/>'
+    # Fäuste auf dem Boden
+    b += f'<rect x="132" y="220" width="22" height="18" rx="4" fill="{SK}" stroke="{INK}" stroke-width="1.5"/>'
+    b += f'<rect x="148" y="220" width="22" height="18" rx="4" fill="{SK}" stroke="{INK}" stroke-width="1.5"/>'
+    b += f'<line x1="136" y1="226" x2="150" y2="226" stroke="{INK}" stroke-width="0.6" opacity="0.5"/>'
+    b += f'<line x1="152" y1="226" x2="166" y2="226" stroke="{INK}" stroke-width="0.6" opacity="0.5"/>'
+    # Kopf vorne
+    b += f'<ellipse cx="118" cy="150" rx="14" ry="16" fill="{SK}" stroke="{INK}" stroke-width="1.6"/>'
+    b += f'<path d="M108,142 Q118,128 130,142" fill="{SD}" opacity="0.3"/>'
+    b += f'<path d="M114,150 q4,2 8,0" fill="none" stroke="{INK}" stroke-width="1.4"/>'
+    b += f'<path d="M116,158 q4,2 6,0" fill="none" stroke="{INK}" stroke-width="1"/>'
+    # Linie für Plank Indikation
+    b += f'<line x1="124" y1="158" x2="334" y2="200" stroke="{RED}" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.55"/>'
+    b += _label(230, 152, "gerade Linie", "middle", 7.5)
+    b += _label(145, 250, "Fäuste", "middle", 7)
+    b += _label(335, 250, "Zehenspitzen", "middle", 7)
+    return _svg(400, 260, b)
+
+
+def fig_spinewave():
+    """Wirbelsäulen-Welle / Cat-Cow Pose – zwei Phasen Seitansicht."""
+    # Phase 1: Buckel (Cat), Phase 2: Hohlkreuz (Cow) — nebeneinander
+    b = f'<line x1="20" y1="200" x2="380" y2="200" stroke="{GOLD}" stroke-width="1.6"/>'
+    # Phase 1 (links) Cat — Rücken rund
+    # Hände
+    b += f'<ellipse cx="60" cy="200" rx="10" ry="4" fill="{SK}" stroke="{INK}" stroke-width="1.3"/>'
+    # Arme
+    b += f'<line x1="64" y1="196" x2="80" y2="148" stroke="{ROBE}" stroke-width="10" stroke-linecap="round"/>'
+    b += f'<line x1="64" y1="196" x2="80" y2="148" stroke="{INK}" stroke-width="1.5"/>'
+    # Knie
+    b += f'<ellipse cx="170" cy="200" rx="14" ry="5" fill="{INK}" opacity="0.7"/>'
+    # Oberschenkel
+    b += f'<line x1="166" y1="194" x2="148" y2="148" stroke="{ROBE}" stroke-width="12" stroke-linecap="round"/>'
+    b += f'<line x1="166" y1="194" x2="148" y2="148" stroke="{INK}" stroke-width="1.6"/>'
+    # Rumpf gebogen (Buckel)
+    b += f'<path d="M80,148 Q90,108 114,108 Q138,108 148,148 L148,162 Q138,124 114,124 Q90,124 80,162 Z" fill="{ROBE}" stroke="{INK}" stroke-width="1.8"/>'
+    # Kopf nach unten gesenkt
+    b += f'<ellipse cx="70" cy="160" rx="13" ry="14" fill="{SK}" stroke="{INK}" stroke-width="1.5"/>'
+    b += f'<path d="M62,156 Q70,144 78,156" fill="{SD}" opacity="0.3"/>'
+    b += _label(114, 96, "Cat — Buckel", "middle", 8)
+    b += _arrow(114, 100, 114, 110, RED, 1.2)
+    # Phase 2 (rechts) Cow — Rücken hohl
+    base = 220
+    b += f'<ellipse cx="{base+40}" cy="200" rx="10" ry="4" fill="{SK}" stroke="{INK}" stroke-width="1.3"/>'
+    b += f'<line x1="{base+44}" y1="196" x2="{base+60}" y2="148" stroke="{ROBE}" stroke-width="10" stroke-linecap="round"/>'
+    b += f'<line x1="{base+44}" y1="196" x2="{base+60}" y2="148" stroke="{INK}" stroke-width="1.5"/>'
+    b += f'<ellipse cx="{base+150}" cy="200" rx="14" ry="5" fill="{INK}" opacity="0.7"/>'
+    b += f'<line x1="{base+146}" y1="194" x2="{base+128}" y2="148" stroke="{ROBE}" stroke-width="12" stroke-linecap="round"/>'
+    b += f'<line x1="{base+146}" y1="194" x2="{base+128}" y2="148" stroke="{INK}" stroke-width="1.6"/>'
+    # Rumpf hohl
+    b += f'<path d="M{base+60},148 Q{base+70},180 {base+94},180 Q{base+118},180 {base+128},148 L{base+128},134 Q{base+118},164 {base+94},164 Q{base+70},164 {base+60},134 Z" fill="{ROBE}" stroke="{INK}" stroke-width="1.8"/>'
+    # Kopf gehoben
+    b += f'<ellipse cx="{base+48}" cy="138" rx="13" ry="14" fill="{SK}" stroke="{INK}" stroke-width="1.5"/>'
+    b += f'<path d="M{base+40},130 Q{base+48},120 {base+56},132" fill="{SD}" opacity="0.3"/>'
+    b += _label(base+94, 218, "Cow — Hohlkreuz", "middle", 8)
+    b += _arrow(base+94, 218, base+94, 224, RED, 1.2)
+    # Atemfluss-Indikator
+    b += _arrow(180, 70, 220, 70, RED, 1.4)
+    b += _label(200, 62, "Welle", "middle", 7.5)
+    return _svg(400, 240, b)
+
+
+def fig_wippen():
+    """Wippen auf Yongquan — Fersen heben."""
+    cx = 150
+    b = _ground(cx, 290, 70)
+    # Beide Phasen: ein Fuß flach, einer auf Zehen (Stroboskop-Effekt)
+    # Linke Pose: Fersen am Boden — als Schatten/Hintergrund
+    b += f'<g opacity="0.25">'
+    b += _leg(cx-12, 174, cx-14, 230, cx-16, 288, thick=13)
+    b += _leg(cx+12, 174, cx+14, 230, cx+16, 288, thick=13)
+    b += _foot(cx-16, 290, 'front'); b += _foot(cx+16, 290, 'front')
+    b += '</g>'
+    # Vordere Pose: Fersen gehoben — auf Zehenballen
+    b += _leg(cx-12, 156, cx-14, 212, cx-16, 270, thick=13)
+    b += _leg(cx+12, 156, cx+14, 212, cx+16, 270, thick=13)
+    # Zehenballen am Boden
+    b += f'<path d="M{cx-22},270 L{cx-10},288 L{cx-4},288 Z" fill="{INK}" opacity="0.85"/>'
+    b += f'<path d="M{cx+4},288 L{cx+10},288 L{cx+22},270 Z" fill="{INK}" opacity="0.85"/>'
+    b += _hip_pants(cx, 150, 24, 8)
+    b += _torso(cx, 72, 38, 30, 80)
+    b += _arm(cx-38, 76, cx-44, 112, cx-32, 150, side='l')
+    b += _arm(cx+38, 76, cx+44, 112, cx+32, 150, side='r')
+    b += _hand_open(cx-34, 156, 'down')
+    b += _hand_open(cx+34, 156, 'down')
+    b += _neck(cx, 62, 7, 10); b += _head(cx, 46, 14)
+    b += _crown_arrow(cx, 30)
+    # Aufwärtspfeil neben Körper
+    b += _arrow(cx-70, 250, cx-70, 180, RED, 1.4)
+    b += _label(cx-78, 218, "heben", "end", 7)
+    b += _label(cx-78, 230, "und senken", "end", 7)
+    # Yongquan-Markierung
+    b += f'<circle cx="{cx-22}" cy="280" r="4" fill="none" stroke="{GOLD}" stroke-width="1.2" stroke-dasharray="2,1"/>'
+    b += f'<circle cx="{cx+22}" cy="280" r="4" fill="none" stroke="{GOLD}" stroke-width="1.2" stroke-dasharray="2,1"/>'
+    b += _label(cx+50, 286, "Yongquan", "start", 7)
+    return _svg(280, 308, b)
 
 # ───── Wu Qin Xi — 5 Tiere (kompakt) ────────────────────────────────────────
 
@@ -853,31 +1014,34 @@ def fig_atem():
 
 def fig_five_obstacles():
     body = ''
-    items = [("Begehren", "Verlangen, das zur Obsession wird"),
-             ("Übelwollen", "Ablehnung gegen Mensch oder Situation"),
-             ("Trägheit", "Schwere des Körpers, Dumpfheit des Geistes"),
-             ("Unruhe", "Affengeist springt durch Vergangenheit und Zukunft"),
-             ("Zweifel", "Lähmende Unentschlossenheit")]
-    for i, (title, desc) in enumerate(items):
-        cx = 50 + i*82
-        body += f'<circle cx="{cx}" cy="45" r="28" fill="{BG}" stroke="{RED}" stroke-width="1.8"/>'
-        body += f'<text x="{cx}" y="49" text-anchor="middle" font-family="Georgia,serif" font-size="10pt" fill="{RED}" font-weight="bold">{i+1}</text>'
-        body += f'<text x="{cx}" y="92" text-anchor="middle" font-family="Georgia,serif" font-size="9pt" fill="{INK}" font-weight="bold">{title}</text>'
-        # Beschreibung kurz
-        body += f'<foreignObject x="{cx-40}" y="100" width="80" height="40"><div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Georgia,serif;font-size:6.8pt;color:#1a1208;text-align:center;line-height:1.3;">{desc}</div></foreignObject>'
-    return _svg(440, 150, body)
+    items = [("Begehren", ["Verlangen,", "das zur", "Obsession wird"]),
+             ("Übelwollen", ["Ablehnung", "gegen Mensch", "oder Situation"]),
+             ("Trägheit", ["Schwere des", "Körpers,", "Dumpfheit"]),
+             ("Unruhe", ["Affengeist", "springt durch", "die Zeit"]),
+             ("Zweifel", ["Lähmende", "Unent-", "schlossenheit"])]
+    for i, (title, lines) in enumerate(items):
+        cx = 50 + i*92
+        body += f'<circle cx="{cx}" cy="46" r="28" fill="{BG}" stroke="{RED}" stroke-width="1.8"/>'
+        body += f'<text x="{cx}" y="50" text-anchor="middle" font-family="Georgia,serif" font-size="14pt" fill="{RED}" font-weight="bold">{i+1}</text>'
+        body += f'<text x="{cx}" y="93" text-anchor="middle" font-family="Georgia,serif" font-size="9.5pt" fill="{INK}" font-weight="bold">{title}</text>'
+        for li, ln in enumerate(lines):
+            body += f'<text x="{cx}" y="{110+li*11}" text-anchor="middle" font-family="Georgia,serif" font-size="7.5pt" fill="{INK}">{ln}</text>'
+    return _svg(500, 150, body)
 
 def fig_rain():
-    def box(x, l, de, line1):
-        return (f'<rect x="{x}" y="4" width="86" height="98" rx="8" fill="{BG}" stroke="{RED}" stroke-width="1.8"/>'
-                f'<text x="{x+43}" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="28pt" fill="{RED}" font-weight="bold">{l}</text>'
-                f'<text x="{x+43}" y="62" text-anchor="middle" font-family="Georgia,serif" font-size="9pt" fill="{INK}" font-weight="bold">{de}</text>'
-                f'<text x="{x+43}" y="84" text-anchor="middle" font-family="Georgia,serif" font-size="7pt" fill="{INK}">{line1}</text>')
-    b = box(4, "R", "Recognize", "In welchem Zustand?")
-    b += box(98, "A", "Allow", "Annehmen")
-    b += box(192, "I", "Investigate", "Woher kommt es?")
-    b += box(286, "N", "Non-Identify", "Ich bin nicht meine Gedanken")
-    return _svg(380, 108, b)
+    def box(x, l, de, l1, l2=""):
+        s = (f'<rect x="{x}" y="4" width="108" height="112" rx="8" fill="{BG}" stroke="{RED}" stroke-width="1.8"/>'
+             f'<text x="{x+54}" y="40" text-anchor="middle" font-family="Georgia,serif" font-size="30pt" fill="{RED}" font-weight="bold">{l}</text>'
+             f'<text x="{x+54}" y="66" text-anchor="middle" font-family="Georgia,serif" font-size="9.5pt" fill="{INK}" font-weight="bold">{de}</text>'
+             f'<text x="{x+54}" y="86" text-anchor="middle" font-family="Georgia,serif" font-size="7.2pt" fill="{INK}">{l1}</text>')
+        if l2:
+            s += f'<text x="{x+54}" y="100" text-anchor="middle" font-family="Georgia,serif" font-size="7.2pt" fill="{INK}">{l2}</text>'
+        return s
+    b = box(4, "R", "Recognize", "Welcher", "Zustand?")
+    b += box(118, "A", "Allow", "Annehmen,", "was ist")
+    b += box(232, "I", "Investigate", "Woher kommt", "der Zustand?")
+    b += box(346, "N", "Non-Identify", "Ich bin nicht", "meine Gedanken")
+    return _svg(460, 122, b)
 
 
 # ═══ HTML / CSS ════════════════════════════════════════════════════════════
@@ -1032,8 +1196,9 @@ def toc():
 {p("Wu Bu Quan — Die Fünf-Stand-Faust",44)}{p("Tan Tui — Linie 1",45)}
 {h("Teil VII — Wu Qin Xi (Fünf Tiere)")}
 {p("Tiger · Hirsch · Bär · Affe · Kranich",48)}
-{h("Teil VIII — Die vier Kernübungen")}
-{p("Faust · L-Stand · Seitenarme",54)}
+{h("Teil VIII — Die acht Kernübungen")}
+{p("Vier Stützen: Faust · Ma Bu · L-Stand · Seitenarme",54)}
+{p("Vier Ergänzungen: Hängen · Liegestütz · Welle · Wippen",56)}
 {h("Trainingsplan")}
 {p("12-Wochen-Progression",58)}{p("Tempel-Tagesrhythmus",60)}
 {p("Die sieben Praxis-Prinzipien",61)}
@@ -1519,9 +1684,9 @@ def teil7():
 # ═══ TEIL VIII — VIER KERNÜBUNGEN ══════════════════════════════════════════
 
 def teil8():
-    return f'''{ch("Teil VIII","VIII","Die vier Kernübungen","Vier Praktiken für jeden Tag — das tägliche Brot.")}
+    return f'''{ch("Teil VIII","VIII","Die acht Kernübungen","Vier Stützen für jeden Tag — vier Ergänzungen für mehr.")}
 <div class="content">
-<p class="intro">Wenn du wenig Zeit hast und dennoch jeden Tag das Wesentliche üben willst, sind dies deine vier Stützen. Faust sammelt Willen. Reiter wurzelt dich. L-Stand löst Stress. Seitenarme öffnen Herz und Schultern.</p>
+<p class="intro">Wenn du wenig Zeit hast und dennoch jeden Tag das Wesentliche üben willst, sind dies deine vier Stützen. Faust sammelt Willen. Reiter wurzelt dich. L-Stand löst Stress. Seitenarme öffnen Herz und Schultern. Vier weitere Übungen (5–8) ergänzen, wenn du mehr Zeit hast.</p>
 
 <div class="exrow">
 <div class="exfig">{fig_fist_pose()}</div>
@@ -1572,10 +1737,68 @@ def teil8():
 </div></div>
 
 <hr class="or">
-<h2 class="t2">Übergänge und Atem</h2>
+
+<h2 class="t2">Vier ergänzende Übungen — wenn mehr Zeit ist</h2>
+<p>Diese vier Übungen erweitern die Basis. Sie sind nicht jeden Tag nötig — aber wann immer du 10–15 Minuten zusätzlich hast, hängen sie sich harmonisch an die vier Grundübungen an.</p>
+
+<div class="exrow">
+<div class="exfig">{fig_hang()}</div>
+<div class="exdesc">
+<div class="exhdr">5 · Hängen an der Stange — Xuan Gua</div>
+<div class="exmeta">Anfänger: 3 × 20 Sek. · Fortgeschritten: 2 × 60 Sek.</div>
+<p style="font-size:10pt;">An einer Klimmzugstange mit Schulterbreitem Griff hängen. Schultern bewusst los lassen — sie sinken zu den Ohren auf, dann passiv nach unten. Wirbelsäule wird vom Eigengewicht dekomprimiert. Atem fließt ruhig in den Dan Tian. Shi Heng Yi: <em>„Hängt täglich. Eure Schultern und euer Rücken werden es euch danken."</em></p>
+<div class="exgrid2" style="margin-top:2mm;">
+<div class="gcol"><div class="glbl">Wirkung</div>
+<div class="gtxt">Dekomprimiert Bandscheiben. Öffnet Schultergürtel. Stärkt Griffkraft.</div></div>
+<div class="gcol"><div class="glbl">Variante</div>
+<div class="gtxt">Aktiv: Schulterblätter sanft nach unten ziehen ohne Hochziehen.</div></div></div>
+</div></div>
+
+<div class="exrow">
+<div class="exfig">{fig_pushup()}</div>
+<div class="exdesc">
+<div class="exhdr">6 · Liegestütz auf Fäusten — Quan Wo Cheng</div>
+<div class="exmeta">Anfänger: 3 × 8 · Mittelstufe: 3 × 15 · Fortgeschritten: 5 × 20</div>
+<p style="font-size:10pt;">Klassische Shaolin-Form. Fäuste auf den Boden, Daumen nach vorne, Knöchel sind die Auflage. Körper bildet eine gerade Linie vom Kopf bis zu den Fersen. Tief absenken bis die Brust knapp über dem Boden ist, dann kontrolliert hochdrücken. Einatmen beim Senken, ausatmen beim Drücken.</p>
+<div class="exgrid2" style="margin-top:2mm;">
+<div class="gcol"><div class="glbl">Wirkung</div>
+<div class="gtxt">Brustkorb, Trizeps, Schultern, Core. Stärkt Handgelenke, baut Beng-Quan-Kraft.</div></div>
+<div class="gcol"><div class="glbl">Vorsicht</div>
+<div class="gtxt">Anfänger zunächst auf weicher Matte. Niemals durchhängen — Bauch aktiv.</div></div></div>
+</div></div>
+
+<div class="exrow">
+<div class="exfig">{fig_spinewave()}</div>
+<div class="exdesc">
+<div class="exhdr">7 · Wirbelsäulen-Welle — Long Bei</div>
+<div class="exmeta">10 langsame Wiederholungen · jeden Tag empfohlen</div>
+<p style="font-size:10pt;">Vierfüßlerstand: Hände unter den Schultern, Knie unter den Hüften. Beim Ausatmen wölbt sich der Rücken nach oben wie eine Katze (Cat), Kinn zur Brust. Beim Einatmen senkt sich der Bauch, Kopf hebt sich, Rücken wird hohl (Cow). Die Bewegung beginnt im Steißbein und wandert wirbel für wirbel nach oben.</p>
+<div class="exgrid2" style="margin-top:2mm;">
+<div class="gcol"><div class="glbl">Wirkung</div>
+<div class="gtxt">Mobilisiert die gesamte Wirbelsäule. Massiert die Organe. Bereitet auf Sitzmeditation vor.</div></div>
+<div class="gcol"><div class="glbl">Detail</div>
+<div class="gtxt">Bewegung ist eine Welle — kein Knick. Sehr langsam atmen.</div></div></div>
+</div></div>
+
+<div class="exrow">
+<div class="exfig">{fig_wippen()}</div>
+<div class="exdesc">
+<div class="exhdr">8 · Wippen auf Yongquan — Dian Zu</div>
+<div class="exmeta">30–50 Wiederholungen · Abschluss jeder Einheit</div>
+<p style="font-size:10pt;">Wuji-Stand. Beim Einatmen langsam die Fersen heben — Gewicht wandert auf die Zehenballen (Yongquan-Punkt). Einen Moment in der Höhe halten. Beim Ausatmen die Fersen sanft absenken, ohne sie aufknallen zu lassen. Letzte Wiederholungen 7× mit kleinem Aufprall — das achte Brokat-Stück: <em>„Siebenmaliges Wippen glättet das Qi."</em></p>
+<div class="exgrid2" style="margin-top:2mm;">
+<div class="gcol"><div class="glbl">Wirkung</div>
+<div class="gtxt">Waden, Knöchel, Gleichgewicht. Aktiviert Yongquan und die Nieren. Schließt jede Praxis ab.</div></div>
+<div class="gcol"><div class="glbl">Tipp</div>
+<div class="gtxt">Vor dem Schlafengehen: nur langsam und sanft, keine Aufprälle.</div></div></div>
+</div></div>
+
+<hr class="or">
+<h2 class="t2">Übergänge und Atem — Die Grundregeln</h2>
 <div class="kp">
-<p><strong>Reihenfolge:</strong> 1 → 2 → 3 → 4. Erst Hände/Wille, dann Beine/Wurzel, dann Wirbelsäule lösen, zum Schluss öffnen.</p>
-<p><strong>Pausen:</strong> 30 Sek. Wuji-Stand zwischen jeder Übung. Atem zentrieren. Spüren, was bleibt.</p>
+<p><strong>Grundreihenfolge:</strong> 1 → 2 → 3 → 4. Erst Hände/Wille, dann Beine/Wurzel, dann Wirbelsäule lösen, zum Schluss öffnen.</p>
+<p><strong>Ergänzungen:</strong> Hängen vor dem Sitzen · Liegestütze nach Kernübungen · Welle als Aufwärmen · Wippen als Abschluss.</p>
+<p><strong>Pausen:</strong> 30 Sek. Wuji-Stand zwischen jeder Übung. Atem zentrieren.</p>
 <p><strong>Atemverhältnis:</strong> 4:6 bis 6:8 Sek. Niemals anhalten — auch im Brennen weiter atmen.</p>
 <p><strong>Nachspüren:</strong> 60 Sek. still am Ende. Hände auf Dan Tian.</p>
 </div>
