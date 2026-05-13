@@ -15,28 +15,15 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y \
-            python3-pip \
-            python3-cffi \
-            python3-brotli \
-            libpango-1.0-0 \
-            libpangoft2-1.0-0 \
-            libpangocairo-1.0-0 \
-            libcairo2 \
-            libgdk-pixbuf2.0-0 \
-            libffi-dev \
-            shared-mime-info \
-            fonts-noto \
-            fonts-noto-cjk \
-            fonts-noto-color-emoji
+            libpango-1.0-0 libpangoft2-1.0-0 libpangocairo-1.0-0 \
+            libcairo2 libgdk-pixbuf2.0-0 libffi-dev \
+            fonts-noto fonts-noto-cjk
 
       - name: Install Python packages
         run: pip install weasyprint pypdf
 
-      - name: Render PDF (4 parts + merge)
-        run: |
-          python3 buch.py
-          echo "Exit code: $?"
-          ls -lh *.pdf
+      - name: Render PDF
+        run: python3 buch.py
 
       - name: Upload PDF
         uses: actions/upload-artifact@v4

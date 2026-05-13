@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
-"""SAN XIU – Das Buch | cairosvg rendert SVGs zu PNGs, WeasyPrint rendert HTML"""
+"""SAN XIU – Das Buch | PNG + WeasyPrint"""
 import re, os, sys, time, base64
-import cairosvg
 from weasyprint import HTML
 from pypdf import PdfWriter, PdfReader
 
 OUT = 'San_Xiu_Das_Buch.pdf'
 SK="#C8935A"; SD="#9A7040"; INK="#1a1208"; RED="#8B1A0E"; GOLD="#B8961A"
 #!/usr/bin/env python3
-"""SAN XIU – Das Buch | cairosvg vorrendert SVGs als PNG, WeasyPrint rendert nur HTML"""
+"""SAN XIU – Das Buch | PNG + WeasyPrint"""
 import re, os, sys, time, base64
-import cairosvg
 from weasyprint import HTML
 from pypdf import PdfWriter, PdfReader
 
@@ -251,15 +249,15 @@ def fig_atem():
 <text x="272" y="28" text-anchor="middle" font-family="Georgia,serif" font-size="8pt" fill="{RED}">Atemwellen</text>''')
 
 
-def _to_img(svg_str, caption='', scale=2):
-    png = cairosvg.svg2png(bytestring=svg_str.encode(), scale=scale)
-    b64 = base64.b64encode(png).decode()
+def _to_img(name, caption=''):
+    b64 = open(f'img/{name}.png','rb').read()
+    b64 = __import__('base64').b64encode(b64).decode()
     cap = f'<div class="ic">{caption}</div>' if caption else ''
     return f'<div class="ib"><img src="data:image/png;base64,{b64}" style="display:block;margin:0 auto;max-width:100%;"/>{cap}</div>'
 
-def _to_img_inline(svg_str, scale=2):
-    png = cairosvg.svg2png(bytestring=svg_str.encode(), scale=scale)
-    b64 = base64.b64encode(png).decode()
+def _to_img_inline(name):
+    b64 = open(f'img/{name}.png','rb').read()
+    b64 = __import__('base64').b64encode(b64).decode()
     return f'<img src="data:image/png;base64,{b64}" style="display:block;"/>'
 
 CSS = """
